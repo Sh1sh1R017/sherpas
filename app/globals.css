@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+/* ── Design Tokens ── */
+:root {
+  --background: #fafafa;
+  --foreground: #1a1a1a;
+  --muted: #737373;
+  --muted-foreground: #a3a3a3;
+  --border: #e5e5e5;
+  --accent: #18181b;
+  --accent-foreground: #fafafa;
+  --card: #ffffff;
+  --card-foreground: #1a1a1a;
+  --ring: #18181b;
+  --primary: #18181b;
+  --primary-foreground: #fafafa;
+  --secondary: #f5f5f5;
+  --secondary-foreground: #1a1a1a;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --muted: #a3a3a3;
+  --muted-foreground: #737373;
+  --border: #262626;
+  --accent: #fafafa;
+  --accent-foreground: #18181b;
+  --card: #171717;
+  --card-foreground: #fafafa;
+  --ring: #d4d4d4;
+  --primary: #fafafa;
+  --primary-foreground: #18181b;
+  --secondary: #171717;
+  --secondary-foreground: #fafafa;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* ── Base Resets ── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Focus styles ── */
+*:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* ── Selection ── */
+::selection {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+/* ── Prose-like content width ── */
+.prose-width {
+  max-width: 65ch;
+}
