@@ -12,7 +12,7 @@ export const NAV_LINKS: NavLink[] = [
 export const COMPANY = {
   name: "Sherpas Technology",
   tagline: "Strategic Business Advisory",
-  email: "info@sherpaztech.com",
+  email: "info@sherpas.software",
   phone: "+977 9804279020",
   whatsapp: "https://wa.me/9779804279020",
   address: {
@@ -27,8 +27,8 @@ export const COMPANY = {
     weekends: "Saturday: Closed",
   },
   social: {
-    linkedin: "https://linkedin.com/company/sherpas",
-    twitter: "https://twitter.com/sherpas",
+    linkedin: "https://www.linkedin.com/in/shishir-gautam-b491462a6/",
+    twitter: "https://x.com/_Shishir17",
     whatsapp: "https://wa.me/9779804279020",
   },
 } as const;
