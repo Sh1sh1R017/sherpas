@@ -45,7 +45,7 @@ export function Sidebar() {
         <div className="mt-auto px-3 py-4 border-t border-border/40 space-y-2">
           <ModeToggle />
           <div className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-all hover:bg-muted">
-            <UserButton afterSignOutUrl="/sign-in" />
+            <UserButton />
             <div className="flex flex-col">
               <span className="text-sm font-medium">My Account</span>
             </div>
