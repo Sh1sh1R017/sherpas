@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id                  String     @id @default(uuid())
+  clerkId             String     @unique
+  email               String     @unique
+  credits             Int        @default(5) // 5 free leads
+  stripeCustomerId    String?    @unique
+  stripeSubscriptionId String?   @unique
+  subscriptionStatus  String?    // active, canceled, past_due
+  
+  // BYOK Settings
+  resendKey             String?
+  whatsappToken         String?
+  whatsappPhoneId       String?
+  whatsappTestRecipient String?
+  apolloKey             String?
+  
+  businesses          Business[]
+  campaigns           Campaign[]
+  
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+}
+
+model Business {
+  id              String     @id @default(uuid())
+  userId          String?    // Optional for now to not break existing data, but should be required later
+  user            User?      @relation(fields: [userId], references: [id])
+  
+  name            String
+  website         String?
+  email           String?
+  phone           String?
+  address         String?
+  city            String?
+  country         String?
+  industry        String?
+  googleRating    Float?
+  reviewCount     Int?
+  businessCategory String?
+  socialLinks     String?
+  
+  // AI Analyzed & Enriched Data
+  summary         String?    
+  painPoints      String?    
+  opportunities   String?    
+  leadScore       Int?       @default(0)
+  aiReadiness     Int?       @default(0)
+  
+  ownerName       String?
+  ownerLinkedIn   String?
+  ownerEmail      String?
+
+  priority        String     @default("Cold") // Hot, Warm, Cold
+  status          String     @default("New")  // New, Contacted, Replied, Meeting Booked
+  
+  outreaches      Outreach[]
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+}
+
+model Outreach {
+  id            String   @id @default(uuid())
+  businessId    String
+  business      Business @relation(fields: [businessId], references: [id])
+  type          String   // Email, WhatsApp
+  content       String   
+  status        String   @default("Draft") // Draft, Sent, Replied
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Campaign {
+  id          String   @id @default(uuid())
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id])
+  name        String
+  filters     String     // Store JSON filters (e.g., industry: "Restaurants", city: "Kathmandu")
+  status      String   @default("Active")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
