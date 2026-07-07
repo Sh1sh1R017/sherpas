@@ -4,7 +4,7 @@ import { auth } from '@clerk/nextjs/server';
 import * as cheerio from 'cheerio';
 import { GoogleGenAI } from '@google/genai';
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "dummy_key_for_build" });
 
 export async function POST(req: Request) {
   try {
