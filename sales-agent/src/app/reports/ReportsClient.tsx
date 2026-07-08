@@ -2,12 +2,12 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
-import { BrainCircuit, Star, Activity, Briefcase } from "lucide-react";
+import { BrainCircuit, Star, Activity, Briefcase, Mail, MessageSquare, Calendar } from "lucide-react";
 
 const COLORS = ['#ef4444', '#f97316', '#64748b']; // Red (Hot), Orange (Warm), Gray (Cold)
 
 export function ReportsClient({ data }: { data: any }) {
-  const { totalAnalyzed, avgScore, avgReadiness, priorityData, scoreData } = data;
+  const { totalAnalyzed, avgScore, avgReadiness, priorityData, scoreData, totalSent, totalReplied, totalMeetings } = data;
 
   return (
     <div className="flex flex-col gap-8">
@@ -59,6 +59,43 @@ export function ReportsClient({ data }: { data: any }) {
           </CardContent>
         </Card>
       </div>
+
+      {/* Outreach Metrics Cards */}
+      <div className="grid gap-4 md:grid-cols-3">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Emails Sent</CardTitle>
+            <Mail className="h-4 w-4 text-primary" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{totalSent || 0}</div>
+            <p className="text-xs text-muted-foreground">Outreach emails delivered</p>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Replies Received</CardTitle>
+            <MessageSquare className="h-4 w-4 text-green-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{totalReplied || 0}</div>
+            <p className="text-xs text-muted-foreground">Prospects who answered</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Meetings / Interest</CardTitle>
+            <Calendar className="h-4 w-4 text-purple-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{totalMeetings || 0}</div>
+            <p className="text-xs text-muted-foreground">Converted to meetings</p>
+          </CardContent>
+        </Card>
+      </div>
+
 
       {/* Charts */}
       <div className="grid gap-6 md:grid-cols-2">

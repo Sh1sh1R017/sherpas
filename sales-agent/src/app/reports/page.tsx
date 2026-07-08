@@ -10,9 +10,10 @@ export default async function ReportsPage() {
 
   const dbUser = await prisma.user.findUnique({ where: { clerkId: session.userId } });
 
-  // Fetch only analyzed businesses for this user
+  // Fetch only analyzed businesses for this user and their outreach history
   const businesses = await prisma.business.findMany({
-    where: dbUser ? { userId: dbUser.id, leadScore: { not: null } } : { id: "never_match" }
+    where: dbUser ? { userId: dbUser.id, leadScore: { not: null } } : { id: "never_match" },
+    include: { outreaches: true }
   });
 
   const totalAnalyzed = businesses.length;
@@ -31,6 +32,10 @@ export default async function ReportsPage() {
     { range: "81-100", count: 0 },
   ];
 
+  let totalSent = 0;
+  let totalReplied = 0;
+  let totalMeetings = 0;
+
   if (totalAnalyzed > 0) {
     let totalScore = 0;
     let totalReadiness = 0;
@@ -42,6 +47,8 @@ export default async function ReportsPage() {
       totalScore += score;
       totalReadiness += readiness;
 
+      if (b.status === "Meeting Booked") totalMeetings += 1;
+
       if (b.priority === "Hot") priorityData[0].value += 1;
       else if (b.priority === "Warm") priorityData[1].value += 1;
       else if (b.priority === "Cold") priorityData[2].value += 1;
@@ -50,6 +57,13 @@ export default async function ReportsPage() {
       else if (score <= 60) scoreData[1].count += 1;
       else if (score <= 80) scoreData[2].count += 1;
       else scoreData[3].count += 1;
+
+      b.outreaches?.forEach((outreach) => {
+        if (outreach.type === 'Email') {
+          if (outreach.status === 'Sent' || outreach.status === 'Replied') totalSent += 1;
+          if (outreach.status === 'Replied') totalReplied += 1;
+        }
+      });
     });
 
     avgScore = Math.round(totalScore / totalAnalyzed);
@@ -64,7 +78,10 @@ export default async function ReportsPage() {
     avgScore,
     avgReadiness,
     priorityData,
-    scoreData
+    scoreData,
+    totalSent,
+    totalReplied,
+    totalMeetings
   };
 
   return (
