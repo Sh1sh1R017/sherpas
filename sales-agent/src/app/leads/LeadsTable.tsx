@@ -148,8 +148,8 @@ export function LeadsTable({ initialLeads }: { initialLeads: any[] }) {
         </Button>
       </div>
       <Card>
-        <CardContent className="p-0">
-        <Table>
+        <div className="rounded-md border overflow-x-auto pb-4">
+        <Table className="min-w-[800px]">
           <TableHeader>
             <TableRow>
               <TableHead>Business</TableHead>
@@ -273,8 +273,8 @@ export function LeadsTable({ initialLeads }: { initialLeads: any[] }) {
             )})}
           </TableBody>
         </Table>
-      </CardContent>
-    </Card>
+        </div>
+      </Card>
     </div>
   );
 }

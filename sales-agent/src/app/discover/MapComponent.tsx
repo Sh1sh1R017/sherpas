@@ -31,7 +31,7 @@ function MapEvents({ onCenterChange }: { onCenterChange: (center: { lat: number;
 
 export default function MapComponent({ center, radius, onCenterChange, results }: MapProps) {
   return (
-    <div className="h-[500px] w-full rounded-xl overflow-hidden border border-border shadow-sm relative z-0">
+    <div className="h-[350px] md:h-[500px] w-full rounded-xl overflow-hidden border border-border shadow-sm relative z-0">
       <MapContainer center={[center.lat, center.lng]} zoom={13} scrollWheelZoom={true} className="h-full w-full">
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'

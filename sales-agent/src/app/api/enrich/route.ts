@@ -160,7 +160,13 @@ export async function POST(req: Request) {
 
   } catch (error: any) {
     console.error('Analyze API Error:', error);
-    return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
+    
+    let errorMessage = error.message || 'Internal Server Error';
+    if (errorMessage.toLowerCase().includes('429') || errorMessage.toLowerCase().includes('quota') || errorMessage.toLowerCase().includes('rate limit') || errorMessage.toLowerCase().includes('exhausted')) {
+      errorMessage = "The AI is tired rn or my AI is out of water. Let it drink some water first 🚰";
+    }
+
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
 
