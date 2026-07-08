@@ -39,8 +39,6 @@ export const metadata: Metadata = {
   },
 };
 
-import Script from "next/script";
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -52,12 +50,11 @@ export default function RootLayout({
       className={`${inter.variable} ${libreBaskerville.variable} h-full antialiased`}
     >
       <head>
-        <Script 
+        <script 
           async 
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6935968314275395"
           crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
+        ></script>
       </head>
       <body className="min-h-full flex flex-col">
         <ThemeProvider
