@@ -279,11 +279,18 @@ export function LeadsTable({ initialLeads }: { initialLeads: any[] }) {
                         <Button 
                           variant="secondary" 
                           size="sm"
+                          className="relative overflow-hidden"
                           disabled={generatingDraftId === lead.id}
                           onClick={() => handleGenerateDraft(lead.id)}
                         >
-                          {generatingDraftId === lead.id ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                          {emailDraft ? 'Regenerate Draft' : 'Make Draft'}
+                          <div 
+                            className="absolute left-0 top-0 bottom-0 bg-green-500/30 transition-all duration-[5000ms] ease-out" 
+                            style={{ width: generatingDraftId === lead.id ? '95%' : '0%' }} 
+                          />
+                          <span className="relative z-10 flex items-center">
+                            {generatingDraftId === lead.id ? <Loader2 className="h-4 w-4 animate-spin mr-2 text-green-700" /> : null}
+                            {generatingDraftId === lead.id ? 'Writing Draft...' : (emailDraft ? 'Regenerate Draft' : 'Make Draft')}
+                          </span>
                         </Button>
 
                         {emailDraft && (
