@@ -12,6 +12,7 @@ import {
   Target
 } from "lucide-react";
 import { RewardButton } from "@/components/RewardButton";
+import { AdSenseAd } from "@/components/AdSenseAd";
 
 export function Sidebar() {
   const navItems = [
@@ -46,6 +47,13 @@ export function Sidebar() {
         <div className="mt-auto px-3 py-4 border-t border-border/40 space-y-4">
           <div className="px-2">
             <RewardButton />
+          </div>
+          <div className="px-2 hidden md:block">
+            <AdSenseAd 
+              client="ca-pub-6935968314275395" 
+              slot="0987654321" // User needs to update this with actual slot ID
+              format="rectangle"
+            />
           </div>
           <div className="space-y-2">
           <ModeToggle />
