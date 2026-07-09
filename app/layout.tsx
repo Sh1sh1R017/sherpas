@@ -50,10 +50,10 @@ export default function RootLayout({
       className={`${inter.variable} ${libreBaskerville.variable} h-full antialiased`}
     >
       <head>
-        <meta name="google-adsense-account" content="ca-pub-6935968314275395" />
+        <meta name="google-adsense-account" content="ca-pub-6719153597989584" />
         <script 
           async 
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6935968314275395"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6719153597989584"
           crossOrigin="anonymous"
         ></script>
       </head>

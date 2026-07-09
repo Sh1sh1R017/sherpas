@@ -50,7 +50,7 @@ export function Sidebar() {
           </div>
           <div className="px-2 hidden md:block">
             <AdSenseAd 
-              client="ca-pub-6935968314275395" 
+              client="ca-pub-6719153597989584" 
               slot="0987654321" // User needs to update this with actual slot ID
               format="rectangle"
             />

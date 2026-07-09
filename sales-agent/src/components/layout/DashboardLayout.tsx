@@ -20,7 +20,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
         {/* Global Footer Banner Ad */}
         <div className="px-4 md:px-8 pb-4">
           <AdSenseAd 
-            client="ca-pub-6935968314275395" 
+            client="ca-pub-6719153597989584" 
             slot="1234567890" // User needs to update this with their actual slot ID
             format="horizontal"
           />
