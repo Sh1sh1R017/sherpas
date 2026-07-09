@@ -42,7 +42,10 @@ export async function POST(req: Request) {
     }
 
     if (outreach.type === 'Email') {
-      const toEmail = outreach.business.email || userEmail || 'test@example.com';
+      const toEmail = outreach.business.ownerEmail || outreach.business.email;
+      if (!toEmail) {
+        return NextResponse.json({ error: 'This lead has no email address on file.' }, { status: 400 });
+      }
       const emailSubject = `Quick question about ${outreach.business.name}`;
 
       if (dbUser.googleRefreshToken) {

@@ -223,8 +223,9 @@ export function LeadsTable({ initialLeads }: { initialLeads: any[] }) {
                   )}
                 </TableCell>
                 <TableCell>
-                  {lead.priority === 'Hot' && <Badge className="bg-red-500">Hot</Badge>}
-                  {lead.priority === 'Warm' && <Badge className="bg-orange-500">Warm</Badge>}
+                  {lead.priority === 'Super Hot' && <Badge className="bg-purple-600 animate-pulse text-white hover:bg-purple-700">Super Hot 🔥</Badge>}
+                  {lead.priority === 'Hot' && <Badge className="bg-red-500 hover:bg-red-600">Hot</Badge>}
+                  {lead.priority === 'Warm' && <Badge className="bg-orange-500 hover:bg-orange-600">Warm</Badge>}
                   {lead.priority === 'Cold' && <Badge variant="secondary">Cold</Badge>}
                 </TableCell>
                 <TableCell className="text-right">

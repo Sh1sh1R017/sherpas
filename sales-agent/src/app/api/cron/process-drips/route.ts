@@ -60,8 +60,15 @@ export async function GET(req: Request) {
         continue;
       }
 
-      const toEmail = business.email || user.googleEmail;
-      if (!toEmail) continue;
+      const toEmail = business.ownerEmail || business.email;
+      if (!toEmail) {
+        await prisma.outreach.update({
+          where: { id: outreach.id },
+          data: { status: 'Failed', content: 'No email on file' }
+        });
+        results.push({ id: outreach.id, status: 'Failed - No email on file' });
+        continue;
+      }
 
       const emailSubject = `Re: Quick question about ${business.name}`;
 
