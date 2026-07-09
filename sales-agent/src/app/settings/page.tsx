@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { SettingsClient } from "./SettingsClient";
+import { Suspense } from "react";
 
 export default async function SettingsPage() {
   const session = await auth();
@@ -11,6 +12,7 @@ export default async function SettingsPage() {
   const dbUser = await prisma.user.findUnique({ where: { clerkId: session.userId } });
 
   const initialData = {
+    googleEmail: dbUser?.googleEmail || "",
     resendKey: dbUser?.resendKey || "",
     whatsappToken: dbUser?.whatsappToken || "",
     whatsappPhoneId: dbUser?.whatsappPhoneId || "",
@@ -26,7 +28,9 @@ export default async function SettingsPage() {
           <p className="text-muted-foreground">Manage your custom API integrations for email and WhatsApp.</p>
         </div>
         
-        <SettingsClient initialData={initialData} />
+        <Suspense fallback={<div>Loading settings...</div>}>
+          <SettingsClient initialData={initialData} />
+        </Suspense>
       </div>
     </DashboardLayout>
   );

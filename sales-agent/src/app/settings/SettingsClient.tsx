@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,18 @@ export function SettingsClient({ initialData }: { initialData: any }) {
   const [formData, setFormData] = useState(initialData);
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState<{type: 'success' | 'error', text: string} | null>(null);
+  
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const success = searchParams.get('success');
+    const error = searchParams.get('error');
+    if (success === 'gmail_connected') {
+      setMessage({ type: 'success', text: 'Gmail connected successfully!' });
+    } else if (error) {
+      setMessage({ type: 'error', text: `Failed to connect Gmail: ${error}` });
+    }
+  }, [searchParams]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -39,11 +52,42 @@ export function SettingsClient({ initialData }: { initialData: any }) {
 
   return (
     <div className="grid gap-6 md:grid-cols-2">
+      {/* Gmail Config */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Personal Gmail (Recommended)</CardTitle>
+          <CardDescription>Connect your personal Google Account to send outreach emails directly from your inbox for maximum deliverability.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex flex-col space-y-4">
+            {formData.googleEmail ? (
+              <div className="p-3 bg-green-50 text-green-700 border border-green-200 rounded-md text-sm font-medium">
+                Connected as: {formData.googleEmail}
+              </div>
+            ) : (
+              <div className="p-3 bg-yellow-50 text-yellow-700 border border-yellow-200 rounded-md text-sm">
+                Not connected. Using Resend fallback.
+              </div>
+            )}
+            <Button 
+              type="button"
+              variant={formData.googleEmail ? "outline" : "default"}
+              onClick={() => window.location.href = '/api/auth/google'}
+            >
+              {formData.googleEmail ? "Reconnect Gmail" : "Connect with Google"}
+            </Button>
+            <p className="text-xs text-muted-foreground mt-2">
+              Note: You must authorize the app to "Send emails on your behalf". If you see an unverified app warning, click Advanced &rarr; Proceed anyway.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Resend Config */}
       <Card>
         <CardHeader>
-          <CardTitle>Email API (Resend)</CardTitle>
-          <CardDescription>Configure your own Resend API key to send emails directly from your verified domain.</CardDescription>
+          <CardTitle>Email API (Resend Fallback)</CardTitle>
+          <CardDescription>Configure a Resend API key to send emails if Gmail is not connected.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">

@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { Resend } from 'resend';
+import { google } from 'googleapis';
 
 const resend = new Resend(process.env.RESEND_API_KEY || "dummy_key_for_build");
 
@@ -41,22 +42,57 @@ export async function POST(req: Request) {
     }
 
     if (outreach.type === 'Email') {
-      const resendKey = dbUser.resendKey || process.env.RESEND_API_KEY;
-      if (!resendKey) {
-        throw new Error("Resend API Key is missing. Please configure it in Settings.");
-      }
-      const resendClient = new Resend(resendKey);
+      const toEmail = outreach.business.email || userEmail || 'test@example.com';
+      const emailSubject = `Quick question about ${outreach.business.name}`;
 
-      // Send Email via Resend
-      const { data, error } = await resendClient.emails.send({
-        from: 'Sherpas Sales Team <onboarding@resend.dev>', // You should change this to your verified Resend domain
-        to: outreach.business.email || userEmail || 'test@example.com', 
-        subject: `Quick question about ${outreach.business.name}`,
-        text: outreach.content,
-      });
+      if (dbUser.googleRefreshToken) {
+        // Send via User's Personal Gmail Account
+        const oauth2Client = new google.auth.OAuth2(
+          process.env.GOOGLE_CLIENT_ID,
+          process.env.GOOGLE_CLIENT_SECRET
+        );
+        oauth2Client.setCredentials({ refresh_token: dbUser.googleRefreshToken });
 
-      if (error) {
-        throw new Error(error.message);
+        const gmail = google.gmail({ version: 'v1', auth: oauth2Client });
+        
+        const rawMessage = [
+          `To: ${toEmail}`,
+          `Subject: ${emailSubject}`,
+          `Content-Type: text/plain; charset="UTF-8"`,
+          '',
+          outreach.content
+        ].join('\n');
+
+        const encodedMessage = Buffer.from(rawMessage)
+          .toString('base64')
+          .replace(/\+/g, '-')
+          .replace(/\//g, '_')
+          .replace(/=+$/, '');
+
+        await gmail.users.messages.send({
+          userId: 'me',
+          requestBody: {
+            raw: encodedMessage,
+          },
+        });
+      } else {
+        // Fallback to Resend
+        const resendKey = dbUser.resendKey || process.env.RESEND_API_KEY;
+        if (!resendKey) {
+          throw new Error("Resend API Key is missing. Please configure it in Settings.");
+        }
+        const resendClient = new Resend(resendKey);
+
+        const { data, error } = await resendClient.emails.send({
+          from: 'Sherpas Sales Team <onboarding@resend.dev>', // You should change this to your verified Resend domain
+          to: toEmail, 
+          subject: emailSubject,
+          text: outreach.content,
+        });
+
+        if (error) {
+          throw new Error(error.message);
+        }
       }
     } else if (outreach.type === 'WhatsApp') {
       const waToken = dbUser.whatsappToken || process.env.WHATSAPP_ACCESS_TOKEN;

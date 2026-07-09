@@ -29,6 +29,10 @@ model User {
   whatsappTestRecipient String?
   apolloKey             String?
   
+  // Google OAuth for Gmail
+  googleRefreshToken    String?
+  googleEmail           String?
+  
   businesses          Business[]
   campaigns           Campaign[]
   rewardHistory       RewardTransaction[]
