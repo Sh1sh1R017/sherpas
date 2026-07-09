@@ -19,7 +19,6 @@ export const metadata: Metadata = {
   description: "Automated outbound sales platform for Sherpas Software",
 };
 
-import Script from "next/script";
 
 export default function RootLayout({
   children,
@@ -34,12 +33,12 @@ export default function RootLayout({
         className={`${inter.variable} ${playfair.variable} h-full antialiased`}
       >
         <head>
-          <Script 
+          <meta name="google-adsense-account" content="ca-pub-6935968314275395" />
+          <script 
             async 
             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6935968314275395"
             crossOrigin="anonymous"
-            strategy="afterInteractive"
-          />
+          ></script>
         </head>
         <body className="min-h-full flex flex-col">
           <ThemeProvider
