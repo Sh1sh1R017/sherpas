@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Loader2, BrainCircuit, Send, Mail, Download, Trash2 } from "lucide-react";
+import { Loader2, BrainCircuit, Send, Mail, Download, Trash2, MessageCircle } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { buttonVariants } from "@/components/ui/button";
 
@@ -77,6 +77,37 @@ export function LeadsTable({ initialLeads }: { initialLeads: any[] }) {
       } else {
         const err = await res.json();
         alert(err.error || "Failed to send");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Failed to send");
+    } finally {
+      setIsSending(null);
+    }
+  };
+
+  const handleSendWhatsApp = async (outreachId: string, phone: string | null, content: string) => {
+    if (!phone) {
+      alert("No phone number available for this lead.");
+      return;
+    }
+    const formattedPhone = phone.replace(/\D/g, '');
+    const url = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(content)}`;
+    
+    setIsSending(outreachId);
+    try {
+      const res = await fetch("/api/outreach/mark-sent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ outreachId, type: 'WhatsApp' }),
+      });
+      
+      if (res.ok) {
+        window.open(url, '_blank');
+        window.location.reload();
+      } else {
+        const err = await res.json();
+        alert(err.error || "Failed to mark as sent");
       }
     } catch (err) {
       console.error(err);
@@ -276,6 +307,16 @@ export function LeadsTable({ initialLeads }: { initialLeads: any[] }) {
                                       onClick={() => handleMarkReplied(lead.id)}
                                     >
                                       Mark as Replied
+                                    </Button>
+                                  )}
+                                  {lead.phone && (
+                                    <Button
+                                      variant="secondary"
+                                      disabled={emailDraft.status === 'Sent' || isSending === emailDraft.id}
+                                      onClick={() => handleSendWhatsApp(emailDraft.id, lead.phone, emailDraft.content)}
+                                    >
+                                      {isSending === emailDraft.id ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <MessageCircle className="mr-2 h-4 w-4" />}
+                                      WhatsApp
                                     </Button>
                                   )}
                                   <Button 
