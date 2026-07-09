@@ -95,7 +95,16 @@ model Outreach {
   business      Business @relation(fields: [businessId], references: [id])
   type          String   // Email, WhatsApp
   content       String   
-  status        String   @default("Draft") // Draft, Sent, Replied
+  status        String   @default("Draft") // Draft, Scheduled, Sent, Replied
+  
+  // AI Personalization
+  personalizedIntro String?
+  
+  // Drip Campaigns
+  step          Int      @default(1)
+  scheduledFor  DateTime?
+  threadId      String?  // Gmail thread ID for follow-ups
+  
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }

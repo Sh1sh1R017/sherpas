@@ -69,12 +69,20 @@ export async function POST(req: Request) {
           .replace(/\//g, '_')
           .replace(/=+$/, '');
 
-        await gmail.users.messages.send({
+        const sendRes = await gmail.users.messages.send({
           userId: 'me',
           requestBody: {
             raw: encodedMessage,
           },
         });
+        
+        // Save threadId for follow-ups
+        if (sendRes.data.threadId) {
+          await prisma.outreach.update({
+            where: { id: outreachId },
+            data: { threadId: sendRes.data.threadId }
+          });
+        }
       } else {
         // Fallback to Resend
         const resendKey = dbUser.resendKey || process.env.RESEND_API_KEY;
@@ -142,6 +150,27 @@ export async function POST(req: Request) {
       where: { id: outreachId },
       data: { status: 'Sent' }
     });
+
+    // Automated Drip Campaign: Schedule Step 2 Follow-up
+    if (outreach.step === 1 && outreach.type === 'Email') {
+      const followUpDate = new Date();
+      followUpDate.setDate(followUpDate.getDate() + 3); // 3 days later
+
+      // Generate a simple follow-up template based on the personalized intro or business
+      const followUpContent = `Hi again,\n\nJust floating this to the top of your inbox. Did you have a chance to read my previous email?\n\nBest,\nSherpas Software Team`;
+
+      await prisma.outreach.create({
+        data: {
+          businessId: outreach.businessId,
+          type: 'Email',
+          content: followUpContent,
+          status: 'Scheduled',
+          step: 2,
+          scheduledFor: followUpDate,
+          threadId: updated.threadId, // carry over the thread ID if it exists
+        }
+      });
+    }
 
     return NextResponse.json({ success: true, outreach: updated });
 

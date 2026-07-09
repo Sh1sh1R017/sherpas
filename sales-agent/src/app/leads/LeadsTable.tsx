@@ -86,6 +86,24 @@ export function LeadsTable({ initialLeads }: { initialLeads: any[] }) {
     }
   };
 
+  const handleMarkReplied = async (businessId: string) => {
+    try {
+      const res = await fetch("/api/outreach/reply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ businessId }),
+      });
+      if (res.ok) {
+        window.location.reload();
+      } else {
+        alert("Failed to mark as replied");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error marking as replied");
+    }
+  };
+
   const handleExportCSV = () => {
     if (leads.length === 0) return;
     
@@ -251,6 +269,14 @@ export function LeadsTable({ initialLeads }: { initialLeads: any[] }) {
                                   {emailDraft.content}
                                 </div>
                                 <div className="mt-4 flex justify-end gap-2">
+                                  {emailDraft.status === 'Sent' && lead.status !== 'Replied' && (
+                                    <Button 
+                                      variant="outline" 
+                                      onClick={() => handleMarkReplied(lead.id)}
+                                    >
+                                      Mark as Replied
+                                    </Button>
+                                  )}
                                   <Button 
                                     variant="default" 
                                     disabled={emailDraft.status === 'Sent' || isSending === emailDraft.id}

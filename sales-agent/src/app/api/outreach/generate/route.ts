@@ -54,7 +54,27 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Business has not been analyzed yet' }, { status: 400 });
     }
 
-    // Generate Email
+    // 1. Generate Hyper-Personalized Intro Line
+    const introPrompt = `
+      You are an expert SDR. Write a single, highly personalized opening sentence to a business owner.
+      Business: ${business.name}
+      Summary: ${business.summary}
+      Pain Points: ${business.painPoints}
+      
+      Requirements:
+      - ONLY return the single opening sentence, nothing else.
+      - Make it casual, observant, and highly relevant to their business.
+      - Example: "I loved seeing your recent expansion into downtown, but noticed you might be struggling with online bookings."
+    `;
+
+    const introRes = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: introPrompt,
+    });
+    
+    const personalizedIntro = introRes.text?.trim() || "";
+
+    // 2. Generate Email
     const emailPrompt = `
       You are an expert SDR (Sales Development Representative) using the 'Sherpas AI Sales Agent' tool to send this message.
       Write a highly personalized cold email to the owner of this business.
@@ -65,8 +85,8 @@ export async function POST(req: Request) {
       Opportunities: ${business.opportunities}
       
       Requirements:
-      - The email MUST be extremely concise (exactly 3 to 4 short lines maximum).
-      - Make it highly personalized based on their specific pain points or summary.
+      - Start the email with this EXACT opening line: "${personalizedIntro}"
+      - The rest of the email MUST be extremely concise (exactly 3 to 4 short lines maximum).
       - Explicitly mention that you are reaching out using the "Sherpas AI Sales Agent" tool to discover and contact them.
       - End with a low-friction call to action.
       - Do NOT use ANY placeholders like [Your Name] or [Owner Name]. ${business.ownerName ? `Address the email specifically to the Owner/CEO by their name: "${business.ownerName},". If you want to mention their role, they are the founder/CEO.` : `Address them as "Hi team at ${business.name}," or just "Hi there,".`} Sign off as 'Sherpas Software Team'.
@@ -95,6 +115,7 @@ export async function POST(req: Request) {
         type: 'Email',
         content: emailContent,
         status: 'Draft',
+        personalizedIntro: personalizedIntro,
       }
     });
 
