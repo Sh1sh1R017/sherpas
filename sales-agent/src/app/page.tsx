@@ -1,6 +1,5 @@
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { MetricCard } from "@/components/dashboard/MetricCard";
-import { AICopilotFeed } from "@/components/dashboard/AICopilotFeed";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -138,10 +137,6 @@ export default async function Home() {
         {/* Dashboard Hero */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pt-2 pb-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 text-accent text-sm font-medium mb-4">
-              <Sparkles className="h-4 w-4" />
-              <span>AI Copilot Active</span>
-            </div>
             <h1 className="text-4xl font-heading font-bold tracking-tight text-foreground mb-2">
               Good afternoon.
             </h1>
@@ -343,10 +338,7 @@ export default async function Home() {
               </CardContent>
             </Card>
 
-            {/* Live Copilot Feed */}
-            <div className="flex-1 min-h-[300px]">
-              <AICopilotFeed activities={activities} />
-            </div>
+
 
           </div>
         </div>
