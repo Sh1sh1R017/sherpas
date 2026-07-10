@@ -37,7 +37,7 @@ type Country = keyof typeof LOCATIONS;
 
 export function LocationPicker() {
   const [country, setCountry] = useState<Country>("Nepal");
-  const [city, setCity] = useState(LOCATIONS["Nepal"][0]);
+  const [city, setCity] = useState<{ name: string; coords: readonly [number, number] }>(LOCATIONS["Nepal"][0]);
   const [customCoords, setCustomCoords] = useState<[number, number] | null>(null);
 
   const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
