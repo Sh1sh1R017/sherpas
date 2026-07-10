@@ -102,7 +102,7 @@ export function EmailGeneratorClient({ businesses }: { businesses: any[] }) {
             <CardContent className="space-y-4">
               <div className="grid gap-2">
                 <Label>Select Target Lead</Label>
-                <Select value={selectedLeadId} onValueChange={setSelectedLeadId}>
+                <Select value={selectedLeadId} onValueChange={val => val && setSelectedLeadId(val)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a lead that has been analyzed..." />
                   </SelectTrigger>
@@ -120,7 +120,7 @@ export function EmailGeneratorClient({ businesses }: { businesses: any[] }) {
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
                   <Label>Tone</Label>
-                  <Select value={tone} onValueChange={setTone}>
+                  <Select value={tone} onValueChange={val => val && setTone(val)}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -134,7 +134,7 @@ export function EmailGeneratorClient({ businesses }: { businesses: any[] }) {
                 </div>
                 <div className="grid gap-2">
                   <Label>Goal</Label>
-                  <Select value={goal} onValueChange={setGoal}>
+                  <Select value={goal} onValueChange={val => val && setGoal(val)}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
