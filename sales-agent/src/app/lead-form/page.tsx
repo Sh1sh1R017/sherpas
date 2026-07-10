@@ -122,7 +122,7 @@ export default function DemoRequestForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <Label>When do you want to deploy AI?</Label>
-                <Select value={urgency} onValueChange={setUrgency}>
+                <Select value={urgency} onValueChange={(val) => val && setUrgency(val)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select timeline" />
                   </SelectTrigger>
@@ -137,7 +137,7 @@ export default function DemoRequestForm() {
 
               <div className="space-y-2">
                 <Label>Current Sales Team Size</Label>
-                <Select value={salesTeamSize} onValueChange={setSalesTeamSize}>
+                <Select value={salesTeamSize} onValueChange={(val) => val && setSalesTeamSize(val)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select size" />
                   </SelectTrigger>
