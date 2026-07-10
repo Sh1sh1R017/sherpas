@@ -162,8 +162,9 @@ export async function POST(req: Request) {
       const followUpDate = new Date();
       followUpDate.setDate(followUpDate.getDate() + 3); // 3 days later
 
-      // Generate a simple follow-up template based on the personalized intro or business
-      const followUpContent = `Hi again,\n\nJust floating this to the top of your inbox. Did you have a chance to read my previous email?\n\nBest,\nSherpas Software Team`;
+      const senderName = user?.firstName ? `${user.firstName} ${user.lastName || ''}`.trim() : '';
+      const signature = senderName ? `\n\nBest,\n${senderName}` : '';
+      const followUpContent = `Hi again,\n\nJust floating this to the top of your inbox. Did you have a chance to read my previous email?${signature}`;
 
       await prisma.outreach.create({
         data: {

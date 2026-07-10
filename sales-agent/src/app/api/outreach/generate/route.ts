@@ -18,6 +18,7 @@ export async function POST(req: Request) {
     
     const clerkUser = await currentUser();
     const email = clerkUser?.emailAddresses[0]?.emailAddress;
+    const senderName = clerkUser?.firstName ? `${clerkUser.firstName} ${clerkUser.lastName || ''}`.trim() : 'a fellow business owner';
     const isAdmin = email === 'gautamshishir78@gmail.com';
 
     // Enforce Freemium limit: max 1 draft across all businesses
@@ -77,7 +78,7 @@ export async function POST(req: Request) {
 
     // 2. Generate Email
     const emailPrompt = `
-      You are an expert SDR (Sales Development Representative) using the 'Sherpas AI Sales Agent' tool to send this message.
+      You are an expert SDR (Sales Development Representative) writing an email on behalf of ${senderName}.
       Write a highly personalized cold email to the owner of this business.
       
       Business Name: ${business.name}
@@ -88,9 +89,10 @@ export async function POST(req: Request) {
       Requirements:
       - Start the email with this EXACT opening line: "${personalizedIntro}"
       - The rest of the email MUST be extremely concise (exactly 3 to 4 short lines maximum).
-      - Explicitly mention that you are reaching out using the "Sherpas AI Sales Agent" tool to discover and contact them.
+      - Do NOT mention "Sherpas AI Sales Agent" or any AI tool. The email should sound like a genuine, human-written message from ${senderName}.
       - End with a low-friction call to action.
-      - Do NOT use ANY placeholders like [Your Name] or [Owner Name]. ${business.ownerName ? `Address the email specifically to the Owner/CEO by their name: "${business.ownerName},". If you want to mention their role, they are the founder/CEO.` : `Address them as "Hi team at ${business.name}," or just "Hi there,".`} Sign off as 'Sherpas Software Team'.
+      - Do NOT use ANY placeholders like [Your Name] or [Owner Name]. ${business.ownerName ? `Address the email specifically to the Owner/CEO by their name: "${business.ownerName},". If you want to mention their role, they are the founder/CEO.` : `Address them as "Hi team at ${business.name}," or just "Hi there,".`} 
+      - Sign off with a professional salutation and the name: '${senderName}'.
     `;
 
     const emailRes = await ai.models.generateContent({
