@@ -252,11 +252,11 @@ export default async function Home() {
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center gap-3">
                               <Avatar className="h-9 w-9 rounded-md border border-border/50">
-                                <AvatarImage src={`https://avatar.vercel.sh/${lead.companyName}`} />
-                                <AvatarFallback className="rounded-md">{lead.companyName.substring(0, 2).toUpperCase()}</AvatarFallback>
+                                <AvatarImage src={`https://avatar.vercel.sh/${lead.companyName || 'Unknown'}`} />
+                                <AvatarFallback className="rounded-md">{(lead.companyName || 'Unknown').substring(0, 2).toUpperCase()}</AvatarFallback>
                               </Avatar>
                               <div>
-                                <div className="font-medium text-foreground">{lead.companyName}</div>
+                                <div className="font-medium text-foreground">{lead.companyName || 'Unknown Company'}</div>
                                 <div className="text-xs text-muted-foreground">{lead.website || 'No website'}</div>
                               </div>
                             </div>
