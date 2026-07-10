@@ -101,7 +101,7 @@ export default async function Home() {
       type: types[i % types.length],
       title: `AI ${types[i % types.length] === 'discover' ? 'discovered' : 'processed'} lead`,
       timestamp: i === 0 ? "Just now" : `${i * 12} mins ago`,
-      company: lead.companyName
+      company: lead.name
     };
   });
 
@@ -247,11 +247,11 @@ export default async function Home() {
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center gap-3">
                               <Avatar className="h-9 w-9 rounded-md border border-border/50">
-                                <AvatarImage src={`https://avatar.vercel.sh/${lead.companyName || 'Unknown'}`} />
-                                <AvatarFallback className="rounded-md">{(lead.companyName || 'Unknown').substring(0, 2).toUpperCase()}</AvatarFallback>
+                                <AvatarImage src={`https://avatar.vercel.sh/${lead.name || 'Unknown'}`} />
+                                <AvatarFallback className="rounded-md">{(lead.name || 'Unknown').substring(0, 2).toUpperCase()}</AvatarFallback>
                               </Avatar>
                               <div>
-                                <div className="font-medium text-foreground">{lead.companyName || 'Unknown Company'}</div>
+                                <div className="font-medium text-foreground">{lead.name || 'Unknown Company'}</div>
                                 <div className="text-xs text-muted-foreground">{lead.website || 'No website'}</div>
                               </div>
                             </div>
