@@ -3,72 +3,43 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { auth, currentUser } from '@clerk/nextjs/server';
 
-export async function POST(req: Request) {
+async function scrapeEmailFromWebsite(url: string): Promise<string | null> {
   try {
-    const session = await auth();
-    if (!session.userId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    let dbUser = await prisma.user.findUnique({ where: { clerkId: session.userId } });
-    if (!dbUser) {
-      dbUser = await prisma.user.create({
-        data: { clerkId: session.userId, email: `user_${session.userId}@example.com` }
-      });
-    }
-
-    // Enforce Freemium limit: max 5 leads
-    const clerkUser = await currentUser();
-    const email = clerkUser?.emailAddresses[0]?.emailAddress;
-    const isAdmin = email === 'gautamshishir78@gmail.com';
-
-    if (dbUser.subscriptionStatus !== 'active' && !isAdmin) {
-      const currentLeadsCount = await prisma.business.count({
-        where: { userId: dbUser.id }
-      });
-      if (currentLeadsCount >= 5) {
-        return NextResponse.json({ error: 'You have reached your free limit of 5 leads. Please upgrade to Pro.', code: 'PAYWALL' }, { status: 402 });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 sec timeout
+    
+    const response = await fetch(url, { 
+      signal: controller.signal, 
+      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' } 
+    });
+    clearTimeout(timeoutId);
+    
+    if (!response.ok) return null;
+    const html = await response.text();
+    
+    const emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi;
+    const matches = html.match(emailRegex);
+    
+    if (matches) {
+      const validEmails = matches.filter(e => 
+        !e.toLowerCase().endsWith('.png') && 
+        !e.toLowerCase().endsWith('.jpg') && 
+        !e.toLowerCase().endsWith('.webp') &&
+        !e.toLowerCase().endsWith('.svg') &&
+        !e.toLowerCase().endsWith('.gif') &&
+        !e.toLowerCase().includes('sentry') && 
+        !e.toLowerCase().includes('wix') &&
+        !e.toLowerCase().includes('example.com')
+      );
+      if (validEmails.length > 0) {
+        return validEmails[0].toLowerCase();
       }
     }
-
-    const { lat, lng, radius, keyword } = await req.json();
-
-    if (!lat || !lng || !radius || !keyword) {
-      return NextResponse.json({ error: 'Map coordinates, radius, and keyword are required' }, { status: 400 });
-    }
-
-    const query = keyword;
-    const apiKey = process.env.GOOGLE_PLACES_API_KEY;
-
-    if (!apiKey) {
-      return NextResponse.json({ error: 'Google Places API key is missing' }, { status: 500 });
-    }
-
-    const response = await fetch('https://places.googleapis.com/v1/places:searchText', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Goog-Api-Key': apiKey,
-        'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.nationalPhoneNumber,places.websiteUri,places.rating,places.userRatingCount,places.primaryTypeDisplayName,places.location'
-      },
-      body: JSON.stringify({
-        textQuery: query,
-        languageCode: 'en',
-        locationBias: {
-          circle: {
-            center: { latitude: lat, longitude: lng },
-            radius: radius
-          }
-        }
-      })
-    });
-
-    if (!response.ok) {
-      const errText = await response.text();
-      console.error('Google Places API Error:', errText);
-import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { auth, currentUser } from '@clerk/nextjs/server';
+    return null;
+  } catch (error) {
+    return null;
+  }
+}
 
 export async function POST(req: Request) {
   try {
@@ -138,44 +109,6 @@ export async function POST(req: Request) {
 
     const data = await response.json();
     const places = data.places || [];
-
-async function scrapeEmailFromWebsite(url: string): Promise<string | null> {
-  try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 sec timeout
-    
-    const response = await fetch(url, { 
-      signal: controller.signal, 
-      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36' } 
-    });
-    clearTimeout(timeoutId);
-    
-    if (!response.ok) return null;
-    const html = await response.text();
-    
-    const emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi;
-    const matches = html.match(emailRegex);
-    
-    if (matches) {
-      const validEmails = matches.filter(e => 
-        !e.toLowerCase().endsWith('.png') && 
-        !e.toLowerCase().endsWith('.jpg') && 
-        !e.toLowerCase().endsWith('.webp') &&
-        !e.toLowerCase().endsWith('.svg') &&
-        !e.toLowerCase().endsWith('.gif') &&
-        !e.toLowerCase().includes('sentry') && 
-        !e.toLowerCase().includes('wix') &&
-        !e.toLowerCase().includes('example.com')
-      );
-      if (validEmails.length > 0) {
-        return validEmails[0].toLowerCase();
-      }
-    }
-    return null;
-  } catch (error) {
-    return null;
-  }
-}
 
     // Save to Database
     const savedBusinesses = [];
