@@ -322,42 +322,49 @@ export function LeadsTable({ initialLeads }: { initialLeads: any[] }) {
                                 <Mail className="mr-2 h-4 w-4" />
                                 {emailDraft.status === 'Sent' ? 'View Sent' : 'Review Draft'}
                             </DialogTrigger>
-                            <DialogContent>
-                              <DialogHeader>
-                                <DialogTitle>{lead.name} - Email Draft</DialogTitle>
+                            <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col gap-0 p-0 overflow-hidden">
+                              <DialogHeader className="p-6 pb-4 border-b">
+                                <DialogTitle className="text-xl font-semibold leading-none tracking-tight">
+                                  {lead.name} - Email Draft
+                                </DialogTitle>
                               </DialogHeader>
-                              <div className="mt-4">
-                                <div className="bg-muted p-4 rounded-md text-sm whitespace-pre-wrap max-h-96 overflow-y-auto">
+                              
+                              <div className="flex-1 overflow-y-auto p-6 bg-slate-50/50 dark:bg-slate-900/50">
+                                <div className="bg-white dark:bg-slate-950 p-6 rounded-lg border shadow-sm text-sm whitespace-pre-wrap leading-relaxed text-slate-700 dark:text-slate-300">
                                   {emailDraft.content}
                                 </div>
-                                <div className="mt-4 flex justify-end gap-2">
-                                  {emailDraft.status === 'Sent' && lead.status !== 'Replied' && (
-                                    <Button 
-                                      variant="outline" 
-                                      onClick={() => handleMarkReplied(lead.id)}
-                                    >
-                                      Mark as Replied
-                                    </Button>
-                                  )}
-                                  {lead.phone && (
-                                    <Button
-                                      variant="secondary"
-                                      disabled={emailDraft.status === 'Sent' || isSending === emailDraft.id}
-                                      onClick={() => handleSendWhatsApp(emailDraft.id, lead.phone, emailDraft.content)}
-                                    >
-                                      {isSending === emailDraft.id ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <MessageCircle className="mr-2 h-4 w-4" />}
-                                      WhatsApp
-                                    </Button>
-                                  )}
+                              </div>
+
+                              <div className="p-4 px-6 border-t bg-slate-50 dark:bg-slate-900/80 flex justify-end gap-3 shrink-0">
+                                {emailDraft.status === 'Sent' && lead.status !== 'Replied' && (
                                   <Button 
-                                    variant="default" 
-                                    disabled={emailDraft.status === 'Sent' || isSending === emailDraft.id}
-                                    onClick={() => handleSend(emailDraft.id)}
+                                    variant="outline" 
+                                    className="bg-white"
+                                    onClick={() => handleMarkReplied(lead.id)}
                                   >
-                                    {isSending === emailDraft.id ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
-                                    {emailDraft.status === 'Sent' ? 'Already Sent' : 'Send Email'}
+                                    Mark as Replied
                                   </Button>
-                                </div>
+                                )}
+                                {lead.phone && (
+                                  <Button
+                                    variant="secondary"
+                                    className="bg-white hover:bg-slate-100 border shadow-sm"
+                                    disabled={emailDraft.status === 'Sent' || isSending === emailDraft.id}
+                                    onClick={() => handleSendWhatsApp(emailDraft.id, lead.phone, emailDraft.content)}
+                                  >
+                                    {isSending === emailDraft.id ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <MessageCircle className="mr-2 h-4 w-4" />}
+                                    WhatsApp
+                                  </Button>
+                                )}
+                                <Button 
+                                  className="min-w-[120px] shadow-sm"
+                                  variant={emailDraft.status === 'Sent' ? 'secondary' : 'default'} 
+                                  disabled={emailDraft.status === 'Sent' || isSending === emailDraft.id}
+                                  onClick={() => handleSend(emailDraft.id)}
+                                >
+                                  {isSending === emailDraft.id ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
+                                  {emailDraft.status === 'Sent' ? 'Already Sent' : 'Send Email'}
+                                </Button>
                               </div>
                             </DialogContent>
                           </Dialog>
