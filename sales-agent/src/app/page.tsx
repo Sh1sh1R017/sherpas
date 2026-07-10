@@ -15,7 +15,8 @@ import {
   ArrowRight,
   Zap,
   Briefcase,
-  DollarSign
+  DollarSign,
+  MessageSquare
 } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
