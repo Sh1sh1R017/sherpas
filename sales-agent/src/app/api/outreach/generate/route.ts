@@ -126,7 +126,7 @@ export async function POST(req: Request) {
     
     let errorMessage = error.message || 'Internal Server Error';
     if (errorMessage.toLowerCase().includes('429') || errorMessage.toLowerCase().includes('quota') || errorMessage.toLowerCase().includes('rate limit') || errorMessage.toLowerCase().includes('exhausted')) {
-      errorMessage = "The AI is tired rn or my AI is out of water. Let it drink some water first 🚰";
+      errorMessage = "The AI service is currently experiencing high load. Please wait a moment and try again.";
     }
 
     return NextResponse.json({ error: errorMessage }, { status: 500 });
