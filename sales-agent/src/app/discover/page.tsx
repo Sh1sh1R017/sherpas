@@ -221,6 +221,7 @@ export default function DiscoverPage() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Business Name</TableHead>
+                    <TableHead>Email</TableHead>
                     <TableHead>Category</TableHead>
                     <TableHead>Website</TableHead>
                     <TableHead>Rating</TableHead>
@@ -230,6 +231,7 @@ export default function DiscoverPage() {
                   {results.map((biz) => (
                     <TableRow key={biz.id}>
                       <TableCell className="font-medium">{biz.name}</TableCell>
+                      <TableCell className="text-primary font-medium">{biz.email || 'N/A'}</TableCell>
                       <TableCell><Badge variant="outline">{biz.businessCategory || 'N/A'}</Badge></TableCell>
                       <TableCell>
                         {biz.website ? (
