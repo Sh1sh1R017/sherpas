@@ -61,11 +61,11 @@ export function SettingsClient({ initialData }: { initialData: any }) {
         <CardContent className="space-y-4">
           <div className="flex flex-col space-y-4">
             {formData.googleEmail ? (
-              <div className="p-3 bg-green-50 text-green-700 border border-green-200 rounded-md text-sm font-medium">
+              <div className="p-3 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 rounded-md text-sm font-medium">
                 Connected as: {formData.googleEmail}
               </div>
             ) : (
-              <div className="p-3 bg-yellow-50 text-yellow-700 border border-yellow-200 rounded-md text-sm">
+              <div className="p-3 bg-yellow-500/10 text-yellow-500 border border-yellow-500/20 rounded-md text-sm font-medium">
                 Not connected. Using Resend fallback.
               </div>
             )}
