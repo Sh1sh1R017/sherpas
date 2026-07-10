@@ -93,6 +93,8 @@ model Outreach {
   step          Int      @default(1)
   scheduledFor  DateTime?
   threadId      String?  // Gmail thread ID for follow-ups
+  campaignId    String?
+  campaign      Campaign? @relation(fields: [campaignId], references: [id])
   
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -105,6 +107,7 @@ model Campaign {
   name        String
   filters     String     // Store JSON filters (e.g., industry: "Restaurants", city: "Kathmandu")
   status      String   @default("Active")
+  outreaches  Outreach[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
