@@ -58,15 +58,15 @@ export function Sidebar() {
       
       {/* Workspace Switcher Stub */}
       <div className="h-16 flex items-center px-4 border-b border-border/40">
-        <div className="flex items-center gap-3 w-full hover:bg-muted/50 p-2 rounded-lg cursor-pointer transition-colors">
+        <a href="https://sherpas.software" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 w-full hover:bg-muted/50 p-2 rounded-lg cursor-pointer transition-colors">
           <div className="h-8 w-8 rounded-md bg-accent/10 flex items-center justify-center text-accent">
             <Briefcase className="h-4 w-4" />
           </div>
           <div className="flex flex-col flex-1 overflow-hidden">
-            <span className="text-sm font-semibold truncate">Sherpas AI</span>
+            <span className="text-sm font-semibold truncate text-foreground">Sherpas AI</span>
             <span className="text-xs text-muted-foreground truncate">Free Plan</span>
           </div>
-        </div>
+        </a>
       </div>
       
       <div className="flex-1 overflow-y-auto px-3 py-4 space-y-6">
