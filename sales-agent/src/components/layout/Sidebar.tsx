@@ -109,7 +109,6 @@ export function Sidebar() {
         
         <div className="px-3 py-2">
           <UserButton 
-            afterSignOutUrl="/sign-in" 
             showName 
             appearance={{ 
               elements: { 
