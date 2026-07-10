@@ -24,6 +24,7 @@ model User {
   
   // BYOK Settings
   resendKey             String?
+  resendFromEmail       String?
   whatsappToken         String?
   whatsappPhoneId       String?
   whatsappTestRecipient String?

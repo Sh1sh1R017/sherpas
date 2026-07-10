@@ -93,9 +93,10 @@ export async function POST(req: Request) {
           throw new Error("Resend API Key is missing. Please configure it in Settings.");
         }
         const resendClient = new Resend(resendKey);
+        const fromEmail = dbUser.resendFromEmail || 'Sherpas Sales Team <onboarding@resend.dev>';
 
         const { data, error } = await resendClient.emails.send({
-          from: 'Sherpas Sales Team <onboarding@resend.dev>', // You should change this to your verified Resend domain
+          from: fromEmail,
           to: toEmail, 
           subject: emailSubject,
           text: outreach.content,

@@ -20,6 +20,7 @@ export async function GET() {
 
     return NextResponse.json({
       resendKey: user.resendKey || "",
+      resendFromEmail: user.resendFromEmail || "",
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -33,12 +34,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { resendKey } = await req.json();
+    const { resendKey, resendFromEmail } = await req.json();
 
     const updated = await prisma.user.update({
       where: { clerkId: session.userId },
       data: {
         resendKey: resendKey || null,
+        resendFromEmail: resendFromEmail || null,
       }
     });
 
@@ -47,4 +49,3 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
-

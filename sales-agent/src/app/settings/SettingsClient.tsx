@@ -101,6 +101,18 @@ export function SettingsClient({ initialData }: { initialData: any }) {
               onChange={handleChange} 
             />
           </div>
+          <div className="space-y-2">
+            <Label htmlFor="resendFromEmail">Sender Email (From)</Label>
+            <Input 
+              id="resendFromEmail" 
+              name="resendFromEmail" 
+              type="email" 
+              placeholder="e.g. gautam@sherpas.software" 
+              value={formData.resendFromEmail || ''} 
+              onChange={handleChange} 
+            />
+            <p className="text-xs text-muted-foreground">Must be an email address from your verified domain on Resend.</p>
+          </div>
         </CardContent>
         <CardFooter className="flex-col items-start gap-2">
           <Button onClick={handleSave} disabled={isSaving}>

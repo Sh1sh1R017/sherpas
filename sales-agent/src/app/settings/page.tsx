@@ -14,6 +14,7 @@ export default async function SettingsPage() {
   const initialData = {
     googleEmail: dbUser?.googleEmail || "",
     resendKey: dbUser?.resendKey || "",
+    resendFromEmail: dbUser?.resendFromEmail || "",
     whatsappToken: dbUser?.whatsappToken || "",
     whatsappPhoneId: dbUser?.whatsappPhoneId || "",
     whatsappTestRecipient: dbUser?.whatsappTestRecipient || "",
