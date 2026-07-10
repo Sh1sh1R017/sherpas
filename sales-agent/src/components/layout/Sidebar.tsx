@@ -13,6 +13,7 @@ import {
   Megaphone,
   Briefcase
 } from "lucide-react";
+import { UserButton } from "@clerk/nextjs";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -106,14 +107,18 @@ export function Sidebar() {
           <ModeToggle />
         </div>
         
-        <div className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-muted cursor-pointer">
-          <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-xs border border-primary/20">
-            JS
-          </div>
-          <div className="flex flex-col">
-            <span className="text-sm font-medium">John Smith</span>
-            <span className="text-xs text-muted-foreground">My Account</span>
-          </div>
+        <div className="px-3 py-2">
+          <UserButton 
+            afterSignOutUrl="/sign-in" 
+            showName 
+            appearance={{ 
+              elements: { 
+                userButtonBox: "flex-row-reverse w-full justify-between",
+                userButtonOuterIdentifier: "text-foreground font-medium text-sm",
+                rootBox: "w-full"
+              } 
+            }} 
+          />
         </div>
       </div>
     </aside>

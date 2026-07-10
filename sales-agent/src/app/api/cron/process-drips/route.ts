@@ -87,9 +87,10 @@ export async function GET(req: Request) {
         `To: ${toEmail}`,
         `Subject: ${emailSubject}`,
         `Content-Type: text/plain; charset="UTF-8"`,
+        `MIME-Version: 1.0`,
         '',
         outreach.content
-      ].join('\n');
+      ].join('\r\n');
 
       const encodedMessage = Buffer.from(rawMessage)
         .toString('base64')

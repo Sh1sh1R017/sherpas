@@ -35,7 +35,7 @@ export default function PricingPage() {
   return (
     <div className="min-h-screen bg-muted/20 flex flex-col items-center justify-center py-12 px-4 text-center relative">
       <div className="absolute top-4 right-4 flex items-center gap-4">
-        {/* <UserButton /> */}
+        <UserButton />
       </div>
 
       <div className="max-w-3xl w-full flex flex-col items-center">

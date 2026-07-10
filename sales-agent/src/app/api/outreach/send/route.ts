@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { currentUser } from "@clerk/nextjs/server";
-import { auth } from "@/lib/auth";
+import { auth } from "@clerk/nextjs/server";
 import { Resend } from 'resend';
 import { google } from 'googleapis';
 
@@ -63,9 +63,10 @@ export async function POST(req: Request) {
           `To: ${toEmail}`,
           `Subject: ${emailSubject}`,
           `Content-Type: text/plain; charset="UTF-8"`,
+          `MIME-Version: 1.0`,
           '',
           outreach.content
-        ].join('\n');
+        ].join('\r\n');
 
         const encodedMessage = Buffer.from(rawMessage)
           .toString('base64')

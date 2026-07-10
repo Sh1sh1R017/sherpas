@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { auth } from "@/lib/auth";
+import { auth } from "@clerk/nextjs/server";
 import * as cheerio from 'cheerio';
 import { GoogleGenAI } from '@google/genai';
 

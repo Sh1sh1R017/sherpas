@@ -1,7 +1,7 @@
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { prisma } from "@/lib/prisma";
 import { LeadsTable } from "./LeadsTable";
-import { auth } from "@/lib/auth";
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 export const dynamic = 'force-dynamic';
