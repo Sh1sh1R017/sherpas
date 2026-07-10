@@ -75,6 +75,14 @@ export default async function Home() {
     }
   });
 
+  const hotLeads = await prisma.business.count({
+    where: { ...whereClause, leadScore: { gte: 80 } }
+  });
+
+  const untouchedLeads = await prisma.business.count({
+    where: { ...whereClause, status: "Analyzed" }
+  });
+
   const aggregations = await prisma.business.aggregate({
     where: whereClause,
     _avg: {
@@ -324,16 +332,22 @@ export default async function Home() {
               </CardHeader>
               <CardContent className="p-4 space-y-3">
                 <div className="p-3 rounded-lg bg-muted/30 border border-border/40 hover:bg-muted/50 transition-colors">
-                  <p className="text-sm font-medium leading-tight mb-1">Healthcare companies in Sydney have a <span className="text-accent">31% higher reply rate</span> this week.</p>
-                  <p className="text-xs text-muted-foreground">Action: Generate tailored campaign.</p>
+                  <p className="text-sm font-medium leading-tight mb-1">
+                    You have <span className="text-accent">{hotLeads} hot leads</span> (Score 80+) waiting.
+                  </p>
+                  <p className="text-xs text-muted-foreground">Action: Prioritize these in your next campaign.</p>
                 </div>
                 <div className="p-3 rounded-lg bg-muted/30 border border-border/40 hover:bg-muted/50 transition-colors">
-                  <p className="text-sm font-medium leading-tight mb-1">Follow up with <span className="text-accent">14 warm leads</span>.</p>
-                  <p className="text-xs text-muted-foreground">Action: AI has drafted follow-up emails.</p>
+                  <p className="text-sm font-medium leading-tight mb-1">
+                    <span className="text-accent">{untouchedLeads} leads</span> have been analyzed but not contacted.
+                  </p>
+                  <p className="text-xs text-muted-foreground">Action: Use the Email Generator to draft outreach.</p>
                 </div>
                 <div className="p-3 rounded-lg bg-muted/30 border border-border/40 hover:bg-muted/50 transition-colors">
-                  <p className="text-sm font-medium leading-tight mb-1">Construction businesses are converting best.</p>
-                  <p className="text-xs text-muted-foreground">Action: Shift discovery targeting.</p>
+                  <p className="text-sm font-medium leading-tight mb-1">
+                    Your current average reply rate is <span className="text-accent">{replyRate}%</span>.
+                  </p>
+                  <p className="text-xs text-muted-foreground">Action: A/B test a new sequence Tone.</p>
                 </div>
               </CardContent>
             </Card>
