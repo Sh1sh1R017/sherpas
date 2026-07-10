@@ -1,7 +1,8 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { auth, currentUser } from '@clerk/nextjs/server';
+import { currentUser } from "@clerk/nextjs/server";
+import { auth } from "@/lib/auth";
 
 async function scrapeEmailFromWebsite(url: string): Promise<string | null> {
   try {
