@@ -10,10 +10,13 @@ export async function GET(req: Request) {
       return new NextResponse('Unauthorized', { status: 401 });
     }
 
+    const reqUrl = new URL(req.url);
+    const redirectUri = `${reqUrl.protocol}//${reqUrl.host}/api/auth/google/callback`;
+
     const oauth2Client = new google.auth.OAuth2(
       process.env.GOOGLE_CLIENT_ID,
       process.env.GOOGLE_CLIENT_SECRET,
-      `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/auth/google/callback`
+      redirectUri
     );
 
     // Generate a url that asks permissions for Gmail send scope

@@ -5,18 +5,20 @@ import { prisma } from '@/lib/prisma';
 
 export async function GET(req: Request) {
   try {
-    const { searchParams } = new URL(req.url);
+    const reqUrl = new URL(req.url);
+    const appUrl = `${reqUrl.protocol}//${reqUrl.host}`;
+    const searchParams = reqUrl.searchParams;
     const code = searchParams.get('code');
     const state = searchParams.get('state'); // This contains the clerkId
 
     if (!code || !state) {
-      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/settings?error=missing_code_or_state`);
+      return NextResponse.redirect(`${appUrl}/settings?error=missing_code_or_state`);
     }
 
     const oauth2Client = new google.auth.OAuth2(
       process.env.GOOGLE_CLIENT_ID,
       process.env.GOOGLE_CLIENT_SECRET,
-      `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/auth/google/callback`
+      `${appUrl}/api/auth/google/callback`
     );
 
     const { tokens } = await oauth2Client.getToken(code);
@@ -40,9 +42,11 @@ export async function GET(req: Request) {
       }
     });
 
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/settings?success=gmail_connected`);
+    return NextResponse.redirect(`${appUrl}/settings?success=gmail_connected`);
   } catch (error) {
     console.error('Error handling Google OAuth callback:', error);
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/settings?error=oauth_failed`);
+    // Best effort fallback for error redirect since we might not have appUrl if the try block failed early
+    const errorUrl = new URL(req.url);
+    return NextResponse.redirect(`${errorUrl.protocol}//${errorUrl.host}/settings?error=oauth_failed`);
   }
 }
