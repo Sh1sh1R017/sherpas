@@ -79,7 +79,22 @@ export async function POST(req: Request) {
           
           // Very aggressive email extraction via regex across the entire body
           const emailRegex = /[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/g;
-          const foundEmails = Array.from(new Set(rawText.match(emailRegex) || []));
+          const rawFoundEmails = Array.from(new Set(rawText.match(emailRegex) || []));
+          const foundEmails = rawFoundEmails.filter(e => {
+            const lower = e.toLowerCase();
+            return !lower.endsWith('.png') && 
+                   !lower.endsWith('.jpg') && 
+                   !lower.endsWith('.webp') &&
+                   !lower.endsWith('.svg') &&
+                   !lower.endsWith('.gif') &&
+                   !lower.endsWith('.js') &&
+                   !lower.endsWith('.css') &&
+                   !lower.includes('sentry') && 
+                   !lower.includes('wix') &&
+                   !lower.includes('example.com') &&
+                   !lower.includes('intl-segmenter') &&
+                   !lower.includes('core-js');
+          });
           
           const mailtoLinks = $('a[href^="mailto:"]').map((_, el) => $(el).attr('href')).get().join(' ');
           const telLinks = $('a[href^="tel:"]').map((_, el) => $(el).attr('href')).get().join(' ');

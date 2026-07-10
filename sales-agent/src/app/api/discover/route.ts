@@ -18,20 +18,25 @@ async function scrapeEmailFromWebsite(url: string): Promise<string | null> {
     if (!response.ok) return null;
     const html = await response.text();
     
-    const emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi;
+    const emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,})/gi;
     const matches = html.match(emailRegex);
     
     if (matches) {
-      const validEmails = matches.filter(e => 
-        !e.toLowerCase().endsWith('.png') && 
-        !e.toLowerCase().endsWith('.jpg') && 
-        !e.toLowerCase().endsWith('.webp') &&
-        !e.toLowerCase().endsWith('.svg') &&
-        !e.toLowerCase().endsWith('.gif') &&
-        !e.toLowerCase().includes('sentry') && 
-        !e.toLowerCase().includes('wix') &&
-        !e.toLowerCase().includes('example.com')
-      );
+      const validEmails = matches.filter(e => {
+        const lower = e.toLowerCase();
+        return !lower.endsWith('.png') && 
+               !lower.endsWith('.jpg') && 
+               !lower.endsWith('.webp') &&
+               !lower.endsWith('.svg') &&
+               !lower.endsWith('.gif') &&
+               !lower.endsWith('.js') &&
+               !lower.endsWith('.css') &&
+               !lower.includes('sentry') && 
+               !lower.includes('wix') &&
+               !lower.includes('example.com') &&
+               !lower.includes('intl-segmenter') &&
+               !lower.includes('core-js');
+      });
       if (validEmails.length > 0) {
         return validEmails[0].toLowerCase();
       }
