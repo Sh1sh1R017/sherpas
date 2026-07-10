@@ -13,7 +13,7 @@ export default async function LeadsPage() {
   const dbUser = await prisma.user.findUnique({ where: { clerkId: session.userId } });
 
   const businesses = await prisma.business.findMany({
-    where: dbUser ? { userId: dbUser.id } : { id: "never_match" }, // If user not found, return empty
+    where: dbUser ? { OR: [{ userId: dbUser.id }, { userId: null }] } : { id: "never_match" }, // Include inbound leads
     include: { outreaches: true },
     orderBy: { createdAt: "desc" },
   });

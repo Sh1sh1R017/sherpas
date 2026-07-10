@@ -20,6 +20,14 @@ interface MapProps {
   results: any[];
 }
 
+function MapUpdater({ center }: { center: { lat: number; lng: number } }) {
+  const map = useMap();
+  useEffect(() => {
+    map.flyTo([center.lat, center.lng], map.getZoom(), { animate: true });
+  }, [center, map]);
+  return null;
+}
+
 function MapEvents({ onCenterChange }: { onCenterChange: (center: { lat: number; lng: number }) => void }) {
   useMapEvents({
     click(e) {
@@ -30,6 +38,16 @@ function MapEvents({ onCenterChange }: { onCenterChange: (center: { lat: number;
 }
 
 export default function MapComponent({ center, radius, onCenterChange, results }: MapProps) {
+  const markerRef = useRef<L.Marker>(null);
+
+  const handleDragEnd = () => {
+    const marker = markerRef.current;
+    if (marker != null) {
+      const { lat, lng } = marker.getLatLng();
+      onCenterChange({ lat, lng });
+    }
+  };
+
   return (
     <div className="h-[350px] md:h-[500px] w-full rounded-xl overflow-hidden border border-border shadow-sm relative z-0">
       <MapContainer center={[center.lat, center.lng]} zoom={13} scrollWheelZoom={true} className="h-full w-full">
@@ -39,13 +57,19 @@ export default function MapComponent({ center, radius, onCenterChange, results }
         />
         
         <MapEvents onCenterChange={onCenterChange} />
+        <MapUpdater center={center} />
 
         {/* Search Radius Circle */}
         <Circle center={[center.lat, center.lng]} radius={radius} pathOptions={{ color: 'hsl(var(--primary))', fillColor: 'hsl(var(--primary))', fillOpacity: 0.1 }} />
         
         {/* Origin Marker */}
-        <Marker position={[center.lat, center.lng]} opacity={0.6}>
-          <Popup>Search Origin</Popup>
+        <Marker 
+          position={[center.lat, center.lng]} 
+          draggable={true} 
+          eventHandlers={{ dragend: handleDragEnd }}
+          ref={markerRef}
+        >
+          <Popup>Search Origin (Drag me)</Popup>
         </Marker>
 
         {/* Result Markers */}

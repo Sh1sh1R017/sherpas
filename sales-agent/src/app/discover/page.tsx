@@ -12,12 +12,31 @@ import { Loader2, Search } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 
+const QUICK_LOCATIONS = {
+  "USA": [
+    { name: "New York", coords: { lat: 40.7128, lng: -74.0060 } },
+    { name: "San Francisco", coords: { lat: 37.7749, lng: -122.4194 } },
+    { name: "Austin", coords: { lat: 30.2672, lng: -97.7431 } },
+  ],
+  "UK": [
+    { name: "London", coords: { lat: 51.5074, lng: -0.1278 } },
+    { name: "Manchester", coords: { lat: 53.4808, lng: -2.2426 } },
+  ],
+  "Nepal": [
+    { name: "Kathmandu", coords: { lat: 27.7172, lng: 85.3240 } },
+    { name: "Biratnagar", coords: { lat: 26.4525, lng: 87.2718 } },
+  ],
+} as const;
+
+type Country = keyof typeof QUICK_LOCATIONS;
+
 // Dynamically import MapComponent to disable SSR since Leaflet uses the window object
 const MapComponent = dynamic(() => import("./MapComponent"), { ssr: false, loading: () => <div className="h-[500px] w-full animate-pulse bg-muted rounded-xl flex items-center justify-center">Loading Map...</div> });
 
 export default function DiscoverPage() {
-  // Default to New York
   const [center, setCenter] = useState({ lat: 40.7128, lng: -74.0060 });
+  const [selectedCountry, setSelectedCountry] = useState<Country>("USA");
+  const [selectedCity, setSelectedCity] = useState("New York");
   const [radius, setRadius] = useState(5000); // 5km
   const [keyword, setKeyword] = useState("Restaurants");
   const [isLoading, setIsLoading] = useState(false);
@@ -25,6 +44,23 @@ export default function DiscoverPage() {
   const [error, setError] = useState<string | null>(null);
   const [showKeywordSuggestions, setShowKeywordSuggestions] = useState(false);
   const router = useRouter();
+
+  const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const country = e.target.value as Country;
+    setSelectedCountry(country);
+    const firstCity = QUICK_LOCATIONS[country][0];
+    setSelectedCity(firstCity.name);
+    setCenter(firstCity.coords);
+  };
+
+  const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const cityName = e.target.value;
+    setSelectedCity(cityName);
+    const cityData = QUICK_LOCATIONS[selectedCountry].find(c => c.name === cityName);
+    if (cityData) {
+      setCenter(cityData.coords);
+    }
+  };
 
   const POPULAR_INDUSTRIES = ['Restaurants', 'Plumbing', 'Real Estate', 'Digital Marketing', 'Dentists', 'Lawyers', 'Accountants', 'Gyms', 'Cafes', 'Salons'];
   const filteredIndustries = POPULAR_INDUSTRIES.filter(i => i.toLowerCase().includes(keyword.toLowerCase()));
@@ -82,6 +118,35 @@ export default function DiscoverPage() {
               <CardContent>
                 <form onSubmit={handleSearch} className="flex flex-col gap-6">
                   
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="country">Country</Label>
+                      <select
+                        id="country"
+                        value={selectedCountry}
+                        onChange={handleCountryChange}
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                      >
+                        {Object.keys(QUICK_LOCATIONS).map((c) => (
+                          <option key={c} value={c}>{c}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="city">City</Label>
+                      <select
+                        id="city"
+                        value={selectedCity}
+                        onChange={handleCityChange}
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                      >
+                        {QUICK_LOCATIONS[selectedCountry].map((c) => (
+                          <option key={c.name} value={c.name}>{c.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
                   <div className="space-y-2">
                     <Label htmlFor="radius">Search Radius: {(radius / 1000).toFixed(1)} km</Label>
                     <input 

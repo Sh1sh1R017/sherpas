@@ -27,7 +27,7 @@ export const COMPANY = {
     weekends: "Saturday: Closed",
   },
   social: {
-    linkedin: "https://www.linkedin.com/in/shishir-gautam-b491462a6/",
+    linkedin: "https://www.linkedin.com/company/sherpa-technologies-nepal",
     twitter: "https://x.com/_Shishir17",
     whatsapp: "https://wa.me/9779804279020",
   },
