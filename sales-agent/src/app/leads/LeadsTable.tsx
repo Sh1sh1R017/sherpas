@@ -139,6 +139,42 @@ export function LeadsTable({ initialLeads }: { initialLeads: any[] }) {
     });
   };
 
+  const handleSendGmail = (outreachId: string, email: string | null, content: string, businessName: string) => {
+    if (!email) {
+      toast.error("No email address available for this lead.");
+      return;
+    }
+    const subject = `Partnership Inquiry - ${businessName}`;
+    const url = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(content)}`;
+    
+    window.open(url, '_blank');
+    toast.success("Gmail opened. Marking as sent in background.");
+    
+    // Optimistic UI
+    setLeads(currentLeads => currentLeads.map(lead => {
+      const hasOutreach = lead.outreaches?.find((o: any) => o.id === outreachId);
+      if (hasOutreach) {
+        return {
+          ...lead,
+          status: "Contacted",
+          outreaches: lead.outreaches.map((o: any) => 
+            o.id === outreachId ? { ...o, status: "Sent" } : o
+          )
+        };
+      }
+      return lead;
+    }));
+
+    // Background fetch
+    fetch("/api/outreach/mark-sent", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ outreachId, type: 'Email' }),
+    }).catch(err => {
+      console.error(err);
+    });
+  };
+
   const handleMarkReplied = async (businessId: string) => {
     try {
       const res = await fetch("/api/outreach/reply", {
@@ -356,6 +392,17 @@ export function LeadsTable({ initialLeads }: { initialLeads: any[] }) {
                                     WhatsApp
                                   </Button>
                                 )}
+                                {lead.ownerEmail || lead.email ? (
+                                  <Button
+                                    variant="secondary"
+                                    className="bg-white hover:bg-slate-100 border shadow-sm"
+                                    disabled={emailDraft.status === 'Sent' || isSending === emailDraft.id}
+                                    onClick={() => handleSendGmail(emailDraft.id, lead.ownerEmail || lead.email, emailDraft.content, lead.name)}
+                                  >
+                                    <Mail className="mr-2 h-4 w-4" />
+                                    Gmail
+                                  </Button>
+                                ) : null}
                                 <Button 
                                   className="min-w-[120px] shadow-sm"
                                   variant={emailDraft.status === 'Sent' ? 'secondary' : 'default'} 
