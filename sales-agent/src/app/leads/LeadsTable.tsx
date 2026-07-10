@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Loader2, BrainCircuit, Send, Mail, Download, Trash2, MessageCircle } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { buttonVariants } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export function LeadsTable({ initialLeads }: { initialLeads: any[] }) {
   const [leads, setLeads] = useState(initialLeads);
@@ -32,7 +33,7 @@ export function LeadsTable({ initialLeads }: { initialLeads: any[] }) {
 
       if (res.ok && data.business) {
         setLeads(leads.map(l => l.id === id ? data.business : l));
-        window.location.reload(); // Reload to fetch fresh DB relationships if needed, or update state manually. A reload is safer for related outreaches right now.
+        toast.success("Lead analyzed successfully!");
       }
     } catch (err) {
       console.error(err);
@@ -50,71 +51,92 @@ export function LeadsTable({ initialLeads }: { initialLeads: any[] }) {
         body: JSON.stringify({ businessId: id }),
       });
       if (res.ok) {
-        window.location.reload(); // Reload to show the new draft
+        const data = await res.json();
+        // Since we don't have the full object, we can just reload for this specific action to get the draft ID,
+        // or just rely on the API returning the draft if we update the backend. For now, a quick reload is fine for generation,
+        // but let's try to just fetch the updated lead instead of a full page reload if possible.
+        // Actually, we'll just do a targeted reload for now since we need the outreach ID.
+        window.location.reload(); 
       } else {
         const errorData = await res.json();
-        alert(errorData.error || "Failed to generate draft");
+        toast.error(errorData.error || "Failed to generate draft");
       }
     } catch (err) {
       console.error(err);
-      alert("Failed to generate draft");
+      toast.error("Failed to generate draft");
     } finally {
       setGeneratingDraftId(null);
     }
   };
 
-  const handleSend = async (outreachId: string) => {
-    setIsSending(outreachId);
-    try {
-      const res = await fetch("/api/outreach/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ outreachId }),
-      });
-      
-      if (res.ok) {
-        window.location.reload(); // Reload to update status badge
-      } else {
-        const err = await res.json();
-        alert(err.error || "Failed to send");
+  const handleSend = (outreachId: string) => {
+    toast.success("Email queued to send in the background!");
+    
+    // Optimistic UI Update: Mark as Sent immediately
+    setLeads(currentLeads => currentLeads.map(lead => {
+      const hasOutreach = lead.outreaches?.find((o: any) => o.id === outreachId);
+      if (hasOutreach) {
+        return {
+          ...lead,
+          status: "Contacted",
+          outreaches: lead.outreaches.map((o: any) => 
+            o.id === outreachId ? { ...o, status: "Sent" } : o
+          )
+        };
       }
-    } catch (err) {
+      return lead;
+    }));
+
+    // Background fetch (non-blocking)
+    fetch("/api/outreach/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ outreachId }),
+    }).then(async res => {
+      if (!res.ok) {
+        const err = await res.json();
+        toast.error(err.error || "Failed to send email");
+      }
+    }).catch(err => {
       console.error(err);
-      alert("Failed to send");
-    } finally {
-      setIsSending(null);
-    }
+      toast.error("Background send failed");
+    });
   };
 
-  const handleSendWhatsApp = async (outreachId: string, phone: string | null, content: string) => {
+  const handleSendWhatsApp = (outreachId: string, phone: string | null, content: string) => {
     if (!phone) {
-      alert("No phone number available for this lead.");
+      toast.error("No phone number available for this lead.");
       return;
     }
     const formattedPhone = phone.replace(/\D/g, '');
     const url = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(content)}`;
     
-    setIsSending(outreachId);
-    try {
-      const res = await fetch("/api/outreach/mark-sent", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ outreachId, type: 'WhatsApp' }),
-      });
-      
-      if (res.ok) {
-        window.open(url, '_blank');
-        window.location.reload();
-      } else {
-        const err = await res.json();
-        alert(err.error || "Failed to mark as sent");
+    window.open(url, '_blank');
+    toast.success("WhatsApp opened. Marking as sent in background.");
+    
+    // Optimistic UI
+    setLeads(currentLeads => currentLeads.map(lead => {
+      const hasOutreach = lead.outreaches?.find((o: any) => o.id === outreachId);
+      if (hasOutreach) {
+        return {
+          ...lead,
+          status: "Contacted",
+          outreaches: lead.outreaches.map((o: any) => 
+            o.id === outreachId ? { ...o, status: "Sent" } : o
+          )
+        };
       }
-    } catch (err) {
+      return lead;
+    }));
+
+    // Background fetch
+    fetch("/api/outreach/mark-sent", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ outreachId, type: 'WhatsApp' }),
+    }).catch(err => {
       console.error(err);
-      alert("Failed to send");
-    } finally {
-      setIsSending(null);
-    }
+    });
   };
 
   const handleMarkReplied = async (businessId: string) => {
@@ -125,13 +147,14 @@ export function LeadsTable({ initialLeads }: { initialLeads: any[] }) {
         body: JSON.stringify({ businessId }),
       });
       if (res.ok) {
-        window.location.reload();
+        setLeads(leads.map(lead => lead.id === businessId ? { ...lead, status: "Replied" } : lead));
+        toast.success("Marked as replied!");
       } else {
-        alert("Failed to mark as replied");
+        toast.error("Failed to mark as replied");
       }
     } catch (err) {
       console.error(err);
-      alert("Error marking as replied");
+      toast.error("Error marking as replied");
     }
   };
 
