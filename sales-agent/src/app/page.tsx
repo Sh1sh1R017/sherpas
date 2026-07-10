@@ -257,7 +257,7 @@ export default async function Home() {
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-muted-foreground">
-                            {lead.niche}
+                            {lead.industry || lead.businessCategory || 'Unknown'}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <Badge variant="outline" className={`font-semibold px-2 py-0.5 ${getScoreColor(lead.leadScore)}`}>
