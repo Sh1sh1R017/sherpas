@@ -45,20 +45,25 @@ export default function DiscoverPage() {
   const [showKeywordSuggestions, setShowKeywordSuggestions] = useState(false);
   const router = useRouter();
 
-  const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const country = e.target.value as Country;
-    setSelectedCountry(country);
-    const firstCity = QUICK_LOCATIONS[country][0];
-    setSelectedCity(firstCity.name);
-    setCenter(firstCity.coords);
-  };
+  const [citySearch, setCitySearch] = useState("");
+  const [isSearchingCity, setIsSearchingCity] = useState(false);
 
-  const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const cityName = e.target.value;
-    setSelectedCity(cityName);
-    const cityData = QUICK_LOCATIONS[selectedCountry].find(c => c.name === cityName);
-    if (cityData) {
-      setCenter(cityData.coords);
+  const handleCitySearch = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!citySearch) return;
+    setIsSearchingCity(true);
+    try {
+      const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(citySearch)}&limit=1`);
+      const data = await res.json();
+      if (data && data.length > 0) {
+        setCenter({ lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) });
+      } else {
+        setError("City not found. Please try a different name.");
+      }
+    } catch (err) {
+      setError("Failed to search for city.");
+    } finally {
+      setIsSearchingCity(false);
     }
   };
 
@@ -112,40 +117,31 @@ export default function DiscoverPage() {
           <div className="space-y-6 flex flex-col justify-start relative z-10">
             <Card>
               <CardHeader>
+                <CardTitle>Map Location</CardTitle>
+                <CardDescription>Search for a city or drag the map.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex gap-2">
+                  <Input 
+                    placeholder="Search city... (e.g. London)" 
+                    value={citySearch}
+                    onChange={(e) => setCitySearch(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleCitySearch()}
+                  />
+                  <Button type="button" variant="secondary" onClick={() => handleCitySearch()} disabled={isSearchingCity}>
+                    {isSearchingCity ? <Loader2 className="h-4 w-4 animate-spin" /> : "Find"}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
                 <CardTitle>Search Criteria</CardTitle>
-                <CardDescription>Drag the map or click to set origin.</CardDescription>
+                <CardDescription>Configure your lead discovery.</CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSearch} className="flex flex-col gap-6">
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="country">Country</Label>
-                      <select
-                        id="country"
-                        value={selectedCountry}
-                        onChange={handleCountryChange}
-                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                      >
-                        {Object.keys(QUICK_LOCATIONS).map((c) => (
-                          <option key={c} value={c}>{c}</option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="city">City</Label>
-                      <select
-                        id="city"
-                        value={selectedCity}
-                        onChange={handleCityChange}
-                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                      >
-                        {QUICK_LOCATIONS[selectedCountry].map((c) => (
-                          <option key={c.name} value={c.name}>{c.name}</option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="radius">Search Radius: {(radius / 1000).toFixed(1)} km</Label>

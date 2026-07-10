@@ -106,7 +106,7 @@ export default function DemoRequestForm() {
               <div className="pt-4 px-2">
                 <Slider 
                   value={leadVolume} 
-                  onValueChange={setLeadVolume} 
+                  onValueChange={(val) => setLeadVolume(val as number[])} 
                   max={20000} 
                   step={500} 
                   className="w-full"
