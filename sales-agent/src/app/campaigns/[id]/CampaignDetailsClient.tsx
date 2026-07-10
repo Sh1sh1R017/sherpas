@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ArrowLeft, Send, Users, Activity, MessageCircle, Mail } from "lucide-react";
 import Link from "next/link";
-import { formatDistanceToNow } from "date-fns";
 
 export function CampaignDetailsClient({ campaign }: { campaign: any }) {
   const totalLeads = campaign.outreaches?.length || 0;
@@ -25,7 +24,7 @@ export function CampaignDetailsClient({ campaign }: { campaign: any }) {
         <div>
           <h1 className="text-3xl font-heading font-bold tracking-tight">{campaign.name}</h1>
           <div className="flex items-center gap-2 mt-1 text-sm text-muted-foreground">
-            <span>Created {formatDistanceToNow(new Date(campaign.createdAt), { addSuffix: true })}</span>
+            <span>Created {new Date(campaign.createdAt).toLocaleDateString()}</span>
             <span>•</span>
             <Badge variant="outline" className={campaign.status === "Active" ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" : ""}>
               {campaign.status}

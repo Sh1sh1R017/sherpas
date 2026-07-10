@@ -10,7 +10,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Rocket, Target, Play, Pause, CheckCircle2, MoreHorizontal, Loader2 } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -228,7 +227,7 @@ export function CampaignsClient({ initialCampaigns, businesses }: { initialCampa
                       )}
                     </TableCell>
                     <TableCell className="text-right text-muted-foreground text-sm">
-                      {formatDistanceToNow(new Date(campaign.createdAt), { addSuffix: true })}
+                      {new Date(campaign.createdAt).toLocaleDateString()}
                     </TableCell>
                   </TableRow>
                 );
