@@ -112,8 +112,16 @@ export async function POST(req: Request) {
     if (aiReply) {
       // NOTE: You can change this to simply save as "Draft" if you prefer to review replies manually.
       if (process.env.RESEND_API_KEY) {
+        let fromEmail = 'Sherpas Consulting <onboarding@resend.dev>';
+        if (business.userId) {
+          const dbUser = await prisma.user.findUnique({ where: { id: business.userId } });
+          if (dbUser?.resendFromEmail) {
+            fromEmail = dbUser.resendFromEmail;
+          }
+        }
+        
         await resend.emails.send({
-          from: 'Sherpas Consulting <onboarding@resend.dev>', // Replace with your domain
+          from: fromEmail,
           to: senderEmail,
           subject: subject.startsWith("Re:") ? subject : `Re: ${subject}`,
           text: aiReply,

@@ -60,8 +60,14 @@ export async function POST(req: Request) {
 
     // 4. Send Email
     if (process.env.RESEND_API_KEY) {
+      let fromEmail = 'Sherpas Software <onboarding@resend.dev>';
+      const adminUser = await prisma.user.findFirst({ where: { email: 'gautamshishir78@gmail.com' } });
+      if (adminUser?.resendFromEmail) {
+        fromEmail = adminUser.resendFromEmail;
+      }
+
       const { data, error } = await resend.emails.send({
-        from: 'Sherpas Software <onboarding@resend.dev>', // Replace with verified domain
+        from: fromEmail,
         to: email,
         subject: subject,
         html: emailHtml,
