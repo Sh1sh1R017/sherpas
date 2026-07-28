@@ -18,32 +18,32 @@ export const metadata: Metadata = {
 
 const FEATURED_SERVICES = [
   {
-    title: "Strategy & Planning",
+    title: "High-Converting Landing Pages",
     description:
-      "We work alongside leadership teams to define clear strategic direction, assess competitive positioning, and build actionable roadmaps that drive measurable outcomes.",
+      "Direct-response landing page architecture built for max conversion rates, complete with real-time live preview environments deployed on custom subdomains.",
     icon: (
       <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m-0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-.778.099-1.533.284-2.253" />
       </svg>
     ),
   },
   {
-    title: "Operations Improvement",
+    title: "Shopify & Dropshipping Stores",
     description:
-      "We diagnose bottlenecks, redesign processes, and implement systems that reduce cost, improve throughput, and create lasting operational discipline.",
+      "Turnkey e-commerce setups with custom theme design, winning product page funnels, supplier fulfillment integration, and lightning-fast checkout.",
     icon: (
       <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
       </svg>
     ),
   },
   {
-    title: "Digital Transformation",
+    title: "Ad Bundles & Graphic Design",
     description:
-      "We guide technology adoption — from platform selection to change management — ensuring investments translate into genuine business capability.",
+      "High-CTR Meta, TikTok & Google ad creatives, UGC hooks, logo brand suites, packaging design, and complete visual marketing asset packs.",
     icon: (
       <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 003.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l9.602-9.602a3.75 3.75 0 015.304 5.304l-9.602 9.602" />
       </svg>
     ),
   },
@@ -51,24 +51,24 @@ const FEATURED_SERVICES = [
 
 const DIFFERENTIATORS = [
   {
-    title: "Evidence over opinion",
+    title: "Live Subdomain Previews",
     description:
-      "Every recommendation is grounded in data and validated against real-world constraints. We don't prescribe frameworks — we solve problems.",
+      "Test and interact with your custom built landing pages and e-commerce stores on a live sub-domain before going live.",
   },
   {
-    title: "Execution built in",
+    title: "Conversion-Engineered Architecture",
     description:
-      "Strategy without execution is just a slide deck. We stay embedded with your teams to make sure plans actually get implemented.",
+      "Every layout, CTA, and color choice is engineered to reduce cost-per-acquisition (CAC) and maximize conversion rates.",
   },
   {
-    title: "Industry depth",
+    title: "Turnkey E-Commerce Launches",
     description:
-      "Our consultants bring decades of experience in financial services, healthcare, technology, and manufacturing.",
+      "From product page sourcing to custom payment gateways and automated dropship supplier links, we build ready-to-scale stores.",
   },
   {
-    title: "Measurable impact",
+    title: "Unified Ad & Brand Creative Bundles",
     description:
-      "We define success metrics upfront and hold ourselves accountable to them. If we can't measure it, we don't recommend it.",
+      "Cohesive ad creatives, video hooks, graphic assets, and landing pages designed to deliver a seamless customer journey.",
   },
 ];
 
