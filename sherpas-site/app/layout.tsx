@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Libre_Baskerville } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -50,6 +51,21 @@ export default function RootLayout({
       className={`${inter.variable} ${libreBaskerville.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-V84CGFEGR8"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-V84CGFEGR8');
+          `}
+        </Script>
+      </head>
       <body className="min-h-full flex flex-col">
         <ThemeProvider
           attribute="class"
