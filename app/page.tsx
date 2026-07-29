@@ -6,9 +6,18 @@ import { Button } from "@/components/Button";
 import { ProjectSlider } from "@/components/ProjectSlider";
 
 export const metadata: Metadata = {
-  title: "Sherpas Technology — Strategic Business Advisory",
+  title: "YouTube Music Playlist Downloader — Convert & Download Playlists to MP3 (US & Canada)",
   description:
-    "Sherpas Technology helps organizations navigate complex business challenges with expert strategy, operations consulting, and digital transformation services.",
+    "Free online YouTube Music Playlist Downloader for users in the United States and Canada. Download full YouTube playlists, audio tracks, and albums to MP3 320kbps fast with Muzip.",
+  keywords: [
+    "YouTube Music Playlist Downloader",
+    "YouTube playlist downloader online",
+    "convert youtube playlist to mp3 320kbps",
+    "free youtube playlist downloader US",
+    "youtube music downloader Canada",
+    "muzip youtube downloader",
+    "download entire youtube playlist online",
+  ],
 };
 
 /* ────────────────────────────────────────────────────
@@ -82,11 +91,41 @@ export default function HomePage() {
       {/* Hero */}
       <Hero />
 
+      {/* Featured Downloader Tool Banner */}
+      <Section bg="muted" className="py-12 border-y border-border/50">
+        <div className="rounded-2xl bg-card border border-red-500/20 p-8 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 text-red-500 text-xs font-semibold uppercase tracking-wider mb-4 border border-red-500/20">
+              ⚡ Free Web Tool — US &amp; Canada
+            </div>
+            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+              Muzip — YouTube Music Playlist Downloader
+            </h2>
+            <p className="mt-3 text-muted leading-relaxed text-sm sm:text-base">
+              Looking for a fast, free <strong>YouTube Music Playlist Downloader</strong> in the US or Canada? Convert and download full YouTube playlists, audio tracks, and albums to high quality <strong>MP3 (320kbps)</strong> instantly without software installation.
+            </p>
+          </div>
+          <div className="flex-shrink-0">
+            <a
+              href="https://muzip.onrender.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-6 py-3.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold text-sm transition-colors shadow-md"
+            >
+              Launch Muzip Downloader
+              <svg className="ml-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </Section>
+
       {/* Featured Services */}
-      <Section bg="muted" id="featured-services">
+      <Section id="featured-services">
         <SectionHeading
           title="What we do"
-          subtitle="We focus on three core practice areas where we consistently deliver impact."
+          subtitle="We focus on core practice areas where we consistently deliver impact."
         />
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {FEATURED_SERVICES.map((service) => (

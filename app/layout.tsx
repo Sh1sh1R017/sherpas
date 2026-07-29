@@ -23,22 +23,42 @@ const libreBaskerville = Libre_Baskerville({
 
 export const metadata: Metadata = {
   title: {
-    default: "Sherpas Technology — Strategic Business Advisory",
-    template: "%s | Sherpas Technology",
+    default: "YouTube Music Playlist Downloader — Free Online MP3 Converter (US & Canada)",
+    template: "%s | YouTube Music Playlist Downloader",
   },
   description:
-    "Sherpas Technology helps organizations navigate complex business challenges with expert strategy, operations consulting, and digital transformation services.",
+    "Fast, free YouTube Music Playlist Downloader for US & Canada users. Convert and download full YouTube music playlists, audio tracks, and albums to high quality MP3 (320kbps) online with Muzip.",
   keywords: [
-    "business consulting",
-    "strategy",
-    "operations",
-    "digital transformation",
-    "management consulting",
+    "YouTube music playlist downloader",
+    "youtube playlist downloader",
+    "youtube music downloader online",
+    "youtube playlist to mp3 320kbps",
+    "free youtube playlist downloader US",
+    "youtube music downloader Canada",
+    "convert youtube playlist to mp3",
+    "download entire youtube playlist",
+    "muzip youtube downloader",
+    "high quality music downloader",
   ],
+  alternates: {
+    canonical: "https://sherpas.software",
+    languages: {
+      "en-US": "https://sherpas.software",
+      "en-CA": "https://sherpas.software",
+    },
+  },
   openGraph: {
+    title: "YouTube Music Playlist Downloader — Free Online MP3 Converter (US & Canada)",
+    description:
+      "Convert and download full YouTube playlists to high quality MP3 320kbps in seconds. Free online tool for United States & Canada.",
     type: "website",
     locale: "en_US",
-    siteName: "Sherpas Technology",
+    siteName: "YouTube Music Playlist Downloader — Muzip",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "YouTube Music Playlist Downloader — Free MP3 Converter",
+    description: "Download full YouTube playlists to MP3 320kbps online in US & Canada.",
   },
 };
 
@@ -66,6 +86,27 @@ export default function RootLayout({
             gtag('config', 'G-V84CGFEGR8');
           `}
         </Script>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              "name": "Muzip — YouTube Music Playlist Downloader",
+              "url": "https://muzip.onrender.com/",
+              "description":
+                "Free online YouTube Music Playlist Downloader for users in the United States and Canada. Convert & download complete YouTube playlists and music to MP3 320kbps.",
+              "applicationCategory": "MultimediaApplication",
+              "operatingSystem": "All",
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD",
+              },
+              "areaServed": ["US", "CA"],
+            }),
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col">
         <AdNetworkScripts />

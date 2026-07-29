@@ -6,6 +6,14 @@ import { SectionHeading } from "./SectionHeading";
 
 const PROJECTS = [
   {
+    title: "Muzip — YouTube Music Playlist Downloader",
+    category: "Web App & Downloader",
+    description: "Fast online YouTube music playlist downloader to convert & download full YouTube music playlists to high quality MP3 320kbps.",
+    link: "https://muzip.onrender.com/",
+    subdomain: "muzip.onrender.com",
+    color: "bg-red-500/10 border-red-500/20",
+  },
+  {
     title: "High-Converting Landing Pages",
     category: "Subdomain Live Demo",
     description: "Ultra-fast direct-response landing pages deployed on live custom subdomains for instant client preview.",
