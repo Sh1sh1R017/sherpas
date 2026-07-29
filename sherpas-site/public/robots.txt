@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+
+# Host
+Host: https://sherpas.software
+
+# Sitemaps
+Sitemap: https://sherpas.software/sitemap.xml
