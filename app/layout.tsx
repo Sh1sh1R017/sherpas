@@ -93,7 +93,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "WebApplication",
               "name": "Muzip — YouTube Music Playlist Downloader",
-              "url": "https://muzip.onrender.com/",
+              "url": "http://muzip.sherpas.software/",
               "description":
                 "Free online YouTube Music Playlist Downloader for users in the United States and Canada. Convert & download complete YouTube playlists and music to MP3 320kbps.",
               "applicationCategory": "MultimediaApplication",

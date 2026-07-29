@@ -107,12 +107,12 @@ export default function HomePage() {
           </div>
           <div className="flex-shrink-0">
             <a
-              href="https://muzip.onrender.com/"
+              href="http://muzip.sherpas.software/"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-6 py-3.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold text-sm transition-colors shadow-md"
             >
-              Launch Muzip Downloader
+              Launch Muzip (muzip.sherpas.software)
               <svg className="ml-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
