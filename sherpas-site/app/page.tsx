@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DynamicHero } from "@/components/DynamicHero";
 import { AIEstimatorWidget } from "@/components/AIEstimatorWidget";
 import { CaseStudiesSection } from "@/components/CaseStudiesSection";
+import { StrategyCallForm } from "@/components/StrategyCallForm";
 import { Section } from "@/components/Section";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Button } from "@/components/Button";
@@ -141,26 +142,7 @@ export default function HomePage() {
             <h3 className="text-lg font-bold text-foreground mb-4">
               Schedule Your Free 30-Min Strategy Call:
             </h3>
-            <form onSubmit={(e) => { e.preventDefault(); alert("Call Requested! Our senior lead engineer will reach out within 2 hours."); }} className="space-y-4">
-              <div>
-                <label className="block text-xs font-semibold text-muted-foreground mb-1">Your Name</label>
-                <input required type="text" placeholder="John Doe" className="w-full px-4 py-3 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-muted-foreground mb-1">Work Email</label>
-                <input required type="email" placeholder="john@company.com" className="w-full px-4 py-3 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-muted-foreground mb-1">What would you like to build or automate?</label>
-                <textarea rows={3} placeholder="e.g. AI lead qualification, internal ERP tool, custom landing page..." className="w-full px-4 py-3 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
-              </div>
-              <button type="submit" className="w-full py-4 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-base transition-all shadow-md flex items-center justify-center gap-2">
-                <span>Book Strategy Call Now</span>
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </button>
-            </form>
+            <StrategyCallForm />
           </div>
         </div>
       </Section>
