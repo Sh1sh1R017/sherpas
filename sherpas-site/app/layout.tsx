@@ -7,6 +7,9 @@ import { Footer } from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { AdBanner } from "@/components/AdBanner";
 import { AdNetworkScripts } from "@/components/AdNetworkScripts";
+import { GeoProvider } from "@/context/GeoContext";
+import { ExitIntentModal } from "@/components/ExitIntentModal";
+import { LiveAIChat } from "@/components/LiveAIChat";
 
 const inter = Inter({
   variable: "--font-geist-sans",
@@ -23,22 +26,18 @@ const libreBaskerville = Libre_Baskerville({
 
 export const metadata: Metadata = {
   title: {
-    default: "YouTube Music Playlist Downloader — Free Online MP3 Converter (US & Canada)",
-    template: "%s | YouTube Music Playlist Downloader",
+    default: "Sherpas Technology — Custom AI Software & Web Product Advisory",
+    template: "%s | Sherpas Technology",
   },
   description:
-    "Fast, free YouTube Music Playlist Downloader for US & Canada users. Convert and download full YouTube music playlists, audio tracks, and albums to high quality MP3 (320kbps) online with Muzip.",
+    "Sherpas Technology builds custom AI software, high-converting landing pages, Shopify e-commerce funnels, and business automation platforms for companies worldwide.",
   keywords: [
-    "YouTube music playlist downloader",
-    "youtube playlist downloader",
-    "youtube music downloader online",
-    "youtube playlist to mp3 320kbps",
-    "free youtube playlist downloader US",
-    "youtube music downloader Canada",
-    "convert youtube playlist to mp3",
-    "download entire youtube playlist",
+    "custom AI software",
+    "business automation",
+    "landing page agency",
+    "shopify e-commerce development",
+    "software consulting",
     "muzip youtube downloader",
-    "high quality music downloader",
   ],
   alternates: {
     canonical: "https://sherpas.software",
@@ -48,17 +47,17 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "YouTube Music Playlist Downloader — Free Online MP3 Converter (US & Canada)",
+    title: "Sherpas Technology — Custom AI Software & Digital Products",
     description:
-      "Convert and download full YouTube playlists to high quality MP3 320kbps in seconds. Free online tool for United States & Canada.",
+      "We design and build custom AI software, internal tools, and high-converting landing pages that save 40+ hours every week.",
     type: "website",
     locale: "en_US",
-    siteName: "YouTube Music Playlist Downloader — Muzip",
+    siteName: "Sherpas Technology",
   },
   twitter: {
     card: "summary_large_image",
-    title: "YouTube Music Playlist Downloader — Free MP3 Converter",
-    description: "Download full YouTube playlists to MP3 320kbps online in US & Canada.",
+    title: "Sherpas Technology — Custom AI Software",
+    description: "Custom AI software and high-converting web applications.",
   },
 };
 
@@ -91,52 +90,52 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "WebApplication",
-              "name": "Muzip — YouTube Music Playlist Downloader",
-              "url": "http://muzip.sherpas.software/",
+              "@type": "Organization",
+              "name": "Sherpas Technology",
+              "url": "https://sherpas.software",
               "description":
-                "Free online YouTube Music Playlist Downloader for users in the United States and Canada. Convert & download complete YouTube playlists and music to MP3 320kbps.",
-              "applicationCategory": "MultimediaApplication",
-              "operatingSystem": "All",
-              "offers": {
-                "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "USD",
-              },
-              "areaServed": ["US", "CA"],
+                "Custom AI software development, landing page architecture, and high-converting e-commerce engineering.",
             }),
           }}
         />
       </head>
       <body className="min-h-full flex flex-col">
-        <AdNetworkScripts />
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Navbar />
-          
-          {/* Top 468x60 Ad Banner */}
-          <div className="w-full flex justify-center py-2 bg-muted/30">
-            <AdBanner adKey="0edf0cc4cad96876a24115f4491072d4" width={468} height={60} />
-          </div>
+        <GeoProvider>
+          <AdNetworkScripts />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Navbar />
+            
+            {/* Top 468x60 Ad Banner */}
+            <div className="w-full flex justify-center py-2 bg-muted/30">
+              <AdBanner adKey="0edf0cc4cad96876a24115f4491072d4" width={468} height={60} />
+            </div>
 
-          <main className="flex-1" id="main-content">
-            {children}
-          </main>
+            <main className="flex-1" id="main-content">
+              {children}
+            </main>
 
-          {/* Ad Network Container */}
-          <div id="container-6431f3c3a8811f121536dba3afd65859" className="w-full flex justify-center my-4"></div>
+            {/* Exit Intent Lead Capture Modal */}
+            <ExitIntentModal />
 
-          {/* Bottom 160x300 Ad Banner */}
-          <div className="w-full flex justify-center py-4 bg-muted/20 border-t border-border/50">
-            <AdBanner adKey="4053486d892f0a47bbb4166f78c15c7d" width={160} height={300} />
-          </div>
+            {/* Floating Live AI Chat Assistant */}
+            <LiveAIChat />
 
-          <Footer />
-        </ThemeProvider>
+            {/* Ad Network Container */}
+            <div id="container-6431f3c3a8811f121536dba3afd65859" className="w-full flex justify-center my-4"></div>
+
+            {/* Bottom 160x300 Ad Banner */}
+            <div className="w-full flex justify-center py-4 bg-muted/20 border-t border-border/50">
+              <AdBanner adKey="4053486d892f0a47bbb4166f78c15c7d" width={160} height={300} />
+            </div>
+
+            <Footer />
+          </ThemeProvider>
+        </GeoProvider>
       </body>
     </html>
   );
