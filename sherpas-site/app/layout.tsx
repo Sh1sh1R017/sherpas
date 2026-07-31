@@ -5,8 +5,6 @@ import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { AdBanner } from "@/components/AdBanner";
-import { AdNetworkScripts } from "@/components/AdNetworkScripts";
 import { GeoProvider } from "@/context/GeoContext";
 import { ExitIntentModal } from "@/components/ExitIntentModal";
 import { LiveAIChat } from "@/components/LiveAIChat";
@@ -101,7 +99,6 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <GeoProvider>
-          <AdNetworkScripts />
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -109,11 +106,6 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Navbar />
-            
-            {/* Top 468x60 Ad Banner */}
-            <div className="w-full flex justify-center py-2 bg-muted/30">
-              <AdBanner adKey="0edf0cc4cad96876a24115f4491072d4" width={468} height={60} />
-            </div>
 
             <main className="flex-1" id="main-content">
               {children}
@@ -124,14 +116,6 @@ export default function RootLayout({
 
             {/* Floating Live AI Chat Assistant */}
             <LiveAIChat />
-
-            {/* Ad Network Container */}
-            <div id="container-6431f3c3a8811f121536dba3afd65859" className="w-full flex justify-center my-4"></div>
-
-            {/* Bottom 160x300 Ad Banner */}
-            <div className="w-full flex justify-center py-4 bg-muted/20 border-t border-border/50">
-              <AdBanner adKey="4053486d892f0a47bbb4166f78c15c7d" width={160} height={300} />
-            </div>
 
             <Footer />
           </ThemeProvider>
